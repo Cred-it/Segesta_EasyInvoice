@@ -12,11 +12,11 @@ pageextension 66020 EasyCreditConnectExt extends "Purchase Credit Memo"
                 Editable = false;
                 Enabled = true;
                 
-                trigger OnLookup(var Text: Text): Boolean
-
+                trigger OnAssistEdit()
                 begin
                     Hyperlink(EasyInvoiceWeb.HyperText(EasyInvoiceCon.EasyInvoiceID));
                 end;
+
             }
         }
 

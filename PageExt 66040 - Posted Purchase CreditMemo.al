@@ -11,12 +11,12 @@ pageextension 66040 EasyPostPurchCredConnectExt extends "Posted Purchase Credit 
                 ApplicationArea = All;
                 Editable = false;
                 Enabled = true;
-                
-                trigger OnLookup(var Text: Text): Boolean
 
+                trigger OnAssistEdit()
                 begin
-                  Hyperlink(EasyInvoiceWeb.HyperText(EasyInvoiceCon.EasyInvoiceID));
+                    Hyperlink(EasyInvoiceWeb.HyperText(EasyInvoiceCon.EasyInvoiceID));
                 end;
+
             }
         }
 

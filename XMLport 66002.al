@@ -45,9 +45,9 @@ xmlport 66002 "Easy Invoice Import XMLV2"
                     trigger OnAfterAssignVariable()
                     var
                     begin
-                      IF NOT EVALUATE(gEasyInvoiceID, EasyInvID) then
-                        gEasyInvoiceID := 0;
-                    
+                        IF NOT EVALUATE(gEasyInvoiceID, EasyInvID) then
+                            gEasyInvoiceID := 0;
+
                     end;
                 }
 
@@ -59,12 +59,12 @@ xmlport 66002 "Easy Invoice Import XMLV2"
                 {
                     MinOccurs = Zero;
                 }
-                
+
                 fieldelement(fCodPayVendorNo; TmpPurchaseHeader."Pay-to Vendor No.")
                 {
                     MinOccurs = Zero;
                 }
-                
+
                 fieldelement(fCodVendorInvoiceNo; TmpPurchaseHeader."Vendor Invoice No.")
                 {
                     MinOccurs = Zero;
@@ -121,6 +121,11 @@ xmlport 66002 "Easy Invoice Import XMLV2"
                 {
                     MinOccurs = Zero;
                     XmlName = 'fOptReleaseInvoice';
+
+                    trigger OnAfterAssignVariable();
+                    begin
+                        //gPostInvoice := (fOptReleaseInvoice = '1');
+                    end;
                 }
                 textelement(foptpostinvoice)
                 {
@@ -128,7 +133,7 @@ xmlport 66002 "Easy Invoice Import XMLV2"
 
                     trigger OnAfterAssignVariable();
                     begin
-                        gPostInvoice := (fOptReleaseInvoice = '1');
+                        gPostInvoice := (fOptPostInvoice = '1');
                     end;
                 }
                 textelement(ftxtprebook)
@@ -389,9 +394,9 @@ xmlport 66002 "Easy Invoice Import XMLV2"
         PurchHdr: Record "Purchase Header";
         //PurchInv: Record 122;
         //PurchCrMemo: Record 124;
-        lEasyInvoiceConnect : Record "Easy Invoice Connection";
+        lEasyInvoiceConnect: Record "Easy Invoice Connection";
         lCduEasyInvoice: Codeunit "Easy Invoice Webservice";
-        
+
     begin
         //****  Error Process ****
         IF gFault THEN
@@ -427,6 +432,7 @@ xmlport 66002 "Easy Invoice Import XMLV2"
 
         //Boeken factuur
         IF gPostInvoice THEN BEGIN
+
             COMMIT;
             CLEARLASTERROR;
             CheckPrebook(PurchHdr);
@@ -440,10 +446,10 @@ xmlport 66002 "Easy Invoice Import XMLV2"
 
                 //Debet
                 IF PurchHdr."Document Type" = PurchHdr."Document Type"::Invoice THEN BEGIN
-                    
+
                     lEasyInvoiceConnect.SetCurrentKey(EasyInvoiceID);
-                    lEasyInvoiceConnect.SetRange(EasyInvoiceID,gEasyInvoiceID);
-                    lEasyInvoiceConnect.SetRange(Type,lEasyInvoiceConnect.type::"Posted Purchase Invoice");
+                    lEasyInvoiceConnect.SetRange(EasyInvoiceID, gEasyInvoiceID);
+                    lEasyInvoiceConnect.SetRange(Type, lEasyInvoiceConnect.type::"Posted Purchase Invoice");
 
                     IF lEasyInvoiceConnect.FINDLAST THEN BEGIN
                         gCodNavInvoiceNo := lEasyInvoiceConnect."Document No.";
@@ -458,10 +464,10 @@ xmlport 66002 "Easy Invoice Import XMLV2"
 
                 //Credit  --22-10-2019
                 ELSE BEGIN
-                    
+
                     lEasyInvoiceConnect.SetCurrentKey(EasyInvoiceID);
-                    lEasyInvoiceConnect.SetRange(EasyInvoiceID,gEasyInvoiceID);
-                    lEasyInvoiceConnect.SetRange(Type,lEasyInvoiceConnect.type::"Posted Purchase Invoice");
+                    lEasyInvoiceConnect.SetRange(EasyInvoiceID, gEasyInvoiceID);
+                    lEasyInvoiceConnect.SetRange(Type, lEasyInvoiceConnect.type::"Posted Purchase Invoice");
                     IF lEasyInvoiceConnect.FINDLAST THEN BEGIN
                         gCodNavInvoiceNo := lEasyInvoiceConnect."Document No.";
                         gTxtFault := '';
@@ -514,7 +520,7 @@ xmlport 66002 "Easy Invoice Import XMLV2"
         gFault: Boolean;
         gDummydec: Decimal;
         gDecSign: Text;
-        gTMPHeader: Record "Purchase Header" temporary ;
+        gTMPHeader: Record "Purchase Header" temporary;
         gTMPLine: Record "Purchase Line" temporary;
         gTMPDim: Record "Dimension Value" temporary;
         gTxtFault: Text;
@@ -546,37 +552,35 @@ xmlport 66002 "Easy Invoice Import XMLV2"
         PurchInvHeader: Record "Purch. Inv. Header";
         PurchCrMemoHeader: Record "Purch. Cr. Memo Hdr.";
         PurchHeader: Record "Purchase Header";
-        lEasyInvConnect : Record "Easy Invoice Connection";
+        lEasyInvConnect: Record "Easy Invoice Connection";
     begin
 
         //Betaald / Gedeeltelijk betaald
 
         lEasyInvConnect.SetCurrentKey(EasyInvoiceID);
-        lEasyInvConnect.SetRange(EasyInvoiceID,vEasyInvoiceID);
-        lEasyInvConnect.SetRange(Type,lEasyInvConnect.Type::"Vendor Ledger Entry");
-        
-        IF lEasyInvConnect.FindFirst() AND VendLE.GET(lEasyInvConnect."Document No.") THEN 
-        BEGIN
+        lEasyInvConnect.SetRange(EasyInvoiceID, vEasyInvoiceID);
+        lEasyInvConnect.SetRange(Type, lEasyInvConnect.Type::"Vendor Ledger Entry");
+
+        IF lEasyInvConnect.FindFirst() AND VendLE.GET(lEasyInvConnect."Document No.") THEN BEGIN
             VendLE.CALCFIELDS("Original Amount", "Remaining Amount");
             gTxtResult := 'Succes';
-                
-                IF (VendLE."Remaining Amount" > 0) AND (VendLE."Remaining Amount" > VendLE."Original Amount") THEN
-                    BEGIN;
-                        EXIT('Gedeeltelijk betaald');
-                    END;
-                
-                IF  (VendLE."Remaining Amount" = 0) AND (VendLE."Remaining Amount" > VendLE."Original Amount") THEN
-                    BEGIN
-                        fDatPayment := FORMAT(VendLE."Closed at Date"); //07-02-2020
-                        EXIT('Betaald')
-                    END;
 
-                //EXIT;
+            IF (VendLE."Remaining Amount" > 0) AND (VendLE."Remaining Amount" > VendLE."Original Amount") THEN BEGIN
+                ;
+                EXIT('Gedeeltelijk betaald');
+            END;
+
+            IF (VendLE."Remaining Amount" = 0) AND (VendLE."Remaining Amount" > VendLE."Original Amount") THEN BEGIN
+                fDatPayment := FORMAT(VendLE."Closed at Date"); //07-02-2020
+                EXIT('Betaald')
+            END;
+
+            //EXIT;
 
         END;
 
         //Geboekt debet
-        lEasyInvConnect.SetRange(Type,lEasyInvConnect.Type::"Posted Purchase Invoice");
+        lEasyInvConnect.SetRange(Type, lEasyInvConnect.Type::"Posted Purchase Invoice");
         IF lEasyInvConnect.FINDFIRST AND (PurchInvHeader.GET(lEasyInvConnect."Document No.")) THEN BEGIN
             gTxtResult := 'Succes';
             gCodNavInvoiceNo := PurchInvHeader."No.";
@@ -584,7 +588,7 @@ xmlport 66002 "Easy Invoice Import XMLV2"
         END;
 
         //Geboekt credit
-        lEasyInvConnect.SetRange(type,lEasyInvConnect.Type::"Posted Purchase Credit Memo");
+        lEasyInvConnect.SetRange(type, lEasyInvConnect.Type::"Posted Purchase Credit Memo");
         IF lEasyInvConnect.FINDFIRST AND (PurchCrMemoHeader.GET(lEasyInvConnect."Document No.")) THEN BEGIN
             gTxtResult := 'Succes';
             gCodNavInvoiceNo := PurchCrMemoHeader."No.";
@@ -592,25 +596,25 @@ xmlport 66002 "Easy Invoice Import XMLV2"
         END;
 
         //Ingelezen debet 
-        lEasyInvConnect.SetRange(Type,lEasyInvConnect.Type::"Purchase Invoice");
-        IF lEasyInvConnect.FINDFIRST AND    
-           PurchHeader.GET(Purchheader."Document Type"::Invoice,lEasyInvConnect."Document No.") THEN BEGIN
+        lEasyInvConnect.SetRange(Type, lEasyInvConnect.Type::"Purchase Invoice");
+        IF lEasyInvConnect.FINDFIRST AND
+           PurchHeader.GET(Purchheader."Document Type"::Invoice, lEasyInvConnect."Document No.") THEN BEGIN
             gTxtResult := 'Succes';
             gCodNavInvoiceNo := PurchHeader."No.";
             EXIT('Ingelezen');
         END;
-        
+
         //Ingelezen credit
-        lEasyInvConnect.SetRange(Type,lEasyInvConnect.Type::"Purchase Credit Memo");
-        IF lEasyInvConnect.FINDFIRST AND    
-            PurchHeader.GET(Purchheader."Document Type"::"Credit Memo",lEasyInvConnect."Document No.") THEN BEGIN
+        lEasyInvConnect.SetRange(Type, lEasyInvConnect.Type::"Purchase Credit Memo");
+        IF lEasyInvConnect.FINDFIRST AND
+            PurchHeader.GET(Purchheader."Document Type"::"Credit Memo", lEasyInvConnect."Document No.") THEN BEGIN
             gTxtResult := 'Succes';
             gCodNavInvoiceNo := PurchHeader."No.";
             EXIT('Ingelezen');
         END;
 
         gTxtResult := 'Error';
-        gTxtFault := STRSUBSTNO('Factuur met EasyInvoiceID %1 niet gevonden',gEasyInvoiceID);
+        gTxtFault := STRSUBSTNO('Factuur met EasyInvoiceID %1 niet gevonden', gEasyInvoiceID);
 
 
         EXIT('Onbekend');
@@ -635,7 +639,7 @@ xmlport 66002 "Easy Invoice Import XMLV2"
 
         EasyInvoiceConnect.SetCurrentKey(EasyInvoiceID);
         EasyInvoiceConnect.SetRange(EasyInvoiceID, EasyInvId);
-        
+
         IF EasyInvoiceConnect.FINDFIRST THEN begin
 
             CASE EasyInvoiceConnect.Type of
@@ -700,12 +704,12 @@ xmlport 66002 "Easy Invoice Import XMLV2"
             END;
 
             EXIT(FALSE);
-        end ELSE 
-        
+        end ELSE
+
         //No valid connection found 
         BEGIN
-            gTxtStatus := 'Onbekend';
-            gTxtFault := STRSUBSTNO('Geen factuurcombinatie gevonden voor EasyIvoiceID %1',gEasyInvoiceID);
+            //    gTxtStatus := 'Onbekend';
+            //    gTxtFault := STRSUBSTNO('Geen factuurcombinatie gevonden voor EasyIvoiceID %1',gEasyInvoiceID);
             EXIT(FALSE);
         END;
 
@@ -831,11 +835,11 @@ xmlport 66002 "Easy Invoice Import XMLV2"
             //Credit
             IF TmpPurchaseHeader."Document Type" = TmpPurchaseHeader."Document Type"::"Credit Memo" THEN BEGIN
 
-                IF NOT((EasyInvoiceConnect.Type = EasyInvoiceConnect.Type::"Posted Purchase Credit Memo") AND
+                IF NOT ((EasyInvoiceConnect.Type = EasyInvoiceConnect.Type::"Posted Purchase Credit Memo") AND
                         PurchCrMemoHeader.GET(EasyInvoiceConnect."Document No.")) THEN BEGIN
-                    
+
                     gTxtStatus := 'Onbekend';
-                    gTxtFault := STRSUBSTNO('Geboekte Creditfactuur niet gevonden voor EasyInvoiceID %1',gEasyInvoiceID);
+                    gTxtFault := STRSUBSTNO('Geboekte Creditfactuur niet gevonden voor EasyInvoiceID %1', gEasyInvoiceID);
                     EXIT('Error');
 
                 END ELSE BEGIN
@@ -858,7 +862,7 @@ xmlport 66002 "Easy Invoice Import XMLV2"
         IF (TmpPurchaseHeader."On Hold" = '') AND (fOptStatus = '1') THEN BEGIN
             gTxtStatus := 'Onbekend';
 
-            gTxtFault := STRSUBSTNO('Ongeboekte factuur niet gevonden voor EasyIvoiceID %1',gEasyInvoiceID);
+            gTxtFault := STRSUBSTNO('Ongeboekte factuur niet gevonden voor EasyIvoiceID %1', gEasyInvoiceID);
             EXIT('Error');
         END;
     end;
@@ -893,7 +897,7 @@ xmlport 66002 "Easy Invoice Import XMLV2"
     end;
 
     //[Scope('Personalization')]
-    procedure GetParameters(var ResultOut: Text; var FaultOut: Text; var DocumentOut: Code[20]; var PayDateOut: Date; var StatusOut: Text;EasyInvoiceIDOUT: integer);
+    procedure GetParameters(var ResultOut: Text; var FaultOut: Text; var DocumentOut: Code[20]; var PayDateOut: Date; var StatusOut: Text; EasyInvoiceIDOUT: integer);
     begin
         ResultOut := gTxtResult;
         FaultOut := gTxtFault;

@@ -12,11 +12,11 @@ pageextension 66030 EasyPostInvoiceConnectExt extends "Posted Purchase Invoice"
                 Editable = false;
                 Enabled = true;
                 
-                trigger OnLookup(var Text: Text): Boolean
-
+                 trigger OnAssistEdit()
                 begin
                     Hyperlink(EasyInvoiceWeb.HyperText(EasyInvoiceCon.EasyInvoiceID));
                 end;
+
             }
         }
 
