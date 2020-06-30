@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en-US" target-language="en-US" original="EasyInvoice Connector" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
+    <header>
+      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="4.0.1916.0" tool-company="Microsoft" />
+    </header>
+    <body>
+      <group id="body" datatype="resx">
+        <trans-unit id="Table 4152627612 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Easy Invoice setup</source>
+        </trans-unit>
+        <trans-unit id="Table 4152627612 - Field 1663593181 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Primary Key</source>
+          <target state="translated">Primaire sleutel</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Easy Invoice setup - Field Primary Key - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 4152627612 - Field 3499795323 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Hyperlink EasyInvoice</source>
+          <target state="translated">HyperLink EasyInvoice</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Easy Invoice setup - Field Hyperlink EasyInvoice - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2272547099 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Easy Invoice Connection</source>
+        </trans-unit>
+        <trans-unit id="Page 1796581183 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>EasyInvoice Setup</source>
+          <target state="translated">EasyInvoice instellingen</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page EasyInvoice - Setup - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1796581183 - Control 2445482498 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>General</source>
+          <target state="translated">Algemeen</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page EasyInvoice - Setup - Control General - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2268455853 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>EasyInvoice Connection List</source>
+        </trans-unit>
+        <trans-unit id="Page 2268455853 - Control 2445482498 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>General</source>
+          <target state="translated">Algemeen</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page EasyInvoice Connection List - Control General - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2268455853 - Control 2229669521 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Type</source>
+          <target state="translated">Soort</target>
+          <note from="Xliff Generator" annotates="general" priority="3">Page EasyInvoice Connection List - Control gTypeSelect - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2268455853 - Control 2229669521 - Property 62802879" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Invoice,Credit,Posted Invoice,Posted Credit,Vendor Ledger Entry</source>
+          <target state="translated">Factuur,Credit,Geboekte Factuur,Geboekte Credit,Leverancierspost</target>
+          <note from="Xliff Generator" annotates="general" priority="3">Page EasyInvoice Connection List - Control gTypeSelect - Property OptionCaption</note>
+        </trans-unit>
+        <trans-unit id="Page 2268455853 - Control 1606682606 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Lijst</source>
+          <target state="translated">Lijst</target>
+          <note from="Xliff Generator" annotates="general" priority="3">Page EasyInvoice Connection List - Control List - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2268455853 - Action 4125097576 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Card</source>
+          <target state="translated">Kaart</target>
+          <note from="Xliff Generator" annotates="general" priority="3">Page EasyInvoice Connection List - Action Card - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2268455853 - Action 4069834516 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Open Card</source>
+          <target state="translated">Open Kaart</target>
+          <note from="Xliff Generator" annotates="general" priority="3">Page EasyInvoice Connection List - Action Open Card - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2268455853 - Action 4069834516 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Opens corresponding Card</source>
+          <target state="translated">Opent overeenkomstige kaart</target>
+          <note from="Xliff Generator" annotates="general" priority="3">Page EasyInvoice Connection List - Action Open Card - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="XmlPort 3107585521 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Easy Invoice MasterDataV2</source>
+        </trans-unit>
+        <trans-unit id="XmlPort 1363721308 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Easy Invoice MasterDataFiltV2</source>
+        </trans-unit>
+        <trans-unit id="XmlPort 1767227713 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Easy Invoice Import XMLV2</source>
+        </trans-unit>
+        <trans-unit id="XmlPort 1208481293 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Easy Invoice Import XMLV2 Resp</source>
+        </trans-unit>
+        <trans-unit id="XmlPort 337561729 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>ImportEasyInvoiceID</source>
+        </trans-unit>
+        <trans-unit id="PageExtension 458253686 - Action 2083976528 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2458191494">
+          <source>Easy Invoice Menu</source>
+        </trans-unit>
+        <trans-unit id="PageExtension 458253686 - Action 2091653841 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2458191494">
+          <source>Easy Invoice</source>
+        </trans-unit>
+        <trans-unit id="PageExtension 458253686 - Action 2272547099 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2458191494">
+          <source>Easy Invoice Connection</source>
+        </trans-unit>
+        <trans-unit id="PageExtension 458253686 - Action 1403250401 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2458191494">
+          <source>Import EasyInvoiceID</source>
+        </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

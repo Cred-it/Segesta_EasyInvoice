@@ -5,7 +5,7 @@ pageextension 66000 ExtendMenuArea extends "Business Manager Role Center"
     {
         addlast(Sections)
         {
-            group("Easy Invoice Setup")
+            group("Easy Invoice Menu")
             {
                 action("Easy Invoice")
                 {
@@ -16,6 +16,11 @@ pageextension 66000 ExtendMenuArea extends "Business Manager Role Center"
                 {
                     RunObject = page "EasyInvoice Connection List";
                     ApplicationArea = All;
+                }
+                action("Import EasyInvoiceID")
+                {
+                    RunObject = xmlport ImportEasyInvoiceID;
+                    ApplicationArea = ALL;
                 }
 
             }
