@@ -350,6 +350,7 @@ codeunit 66000 "Easy Invoice Webservice"
     end;
 
     procedure ReadEasyInvoiceLine(ParEasyInvoiceNo: Integer);
+    
     var
         SQLStatment: Text[1000];
         PurchLine: Record 39;
@@ -602,7 +603,8 @@ codeunit 66000 "Easy Invoice Webservice"
             UNTIL gTmpPurchLine.NEXT = 0;
 
     end;
-
+    
+    
     procedure ReadEasyInvoiceDimension(ParEasyLineNo: Integer; locDimension1: Code[20]; locDimension2: Code[20]) DimEntrySetID: Integer;
     var
         DimSetEntryTmp: Record 480 temporary;
@@ -638,6 +640,8 @@ codeunit 66000 "Easy Invoice Webservice"
         EXIT(DimMgt.GetDimensionSetID(DimSetEntryTmp));
     end;
 
+    
+    
     procedure ValidateChecks(DocNo: Code[20]);
     var
         LocPurchHdr: Record 38;
@@ -723,6 +727,7 @@ codeunit 66000 "Easy Invoice Webservice"
         SELECTLATESTVERSION;
     end;
 
+    
     procedure CheckBTW(ParEasyInvoiceLineNo: Integer; ParPurchLine: Record 39);
     var
         SQLStatment: Text[1024];
@@ -776,6 +781,7 @@ codeunit 66000 "Easy Invoice Webservice"
         //SQLCommandUpdate.ExecuteNonQuery();
     end;
 
+    
     procedure CheckBank(Vendor: Code[20]; BankNo: Text[30]): Code[20];
     var
         LocVendBankAcc: Record 288;
@@ -795,11 +801,13 @@ codeunit 66000 "Easy Invoice Webservice"
         END;
     end;
 
+    
     procedure ExitStatusHeader() ExitTxt: Text[250];
     begin
         //EXIT(StatusHeader);
     end;
 
+    
     procedure InsertInvLineFromRcptLine(var PurchLine: Record 39);
     var
         PurchInvHeader: Record 38;
@@ -892,6 +900,7 @@ codeunit 66000 "Easy Invoice Webservice"
             ItemTrackingMgt.CopyHandledItemTrkgToInvLine(PurchOrderLine, PurchLine);
     end;
 
+    
     procedure InsertPurchExtText(var PurchLine: Record 39; CommentText: Text[50]);
     var
         ToPurchLine: Record 39;
@@ -923,11 +932,13 @@ codeunit 66000 "Easy Invoice Webservice"
         IF ToPurchLine.INSERT THEN;
     end;
 
+    
     procedure SetOrderMactch(ParOM: Boolean);
     begin
         OrderMatch := ParOM
     end;
 
+    
     procedure CheckBlockDeellev(var PurchLine: Record 39; var pPartdel: Boolean);
     var
         PurchRcpLine: Record 121;
@@ -953,12 +964,14 @@ codeunit 66000 "Easy Invoice Webservice"
             gPartdel := TRUE;
     end;
 
+    
     procedure ConvDecToText(pValue: Decimal) result: Text[30];
     begin
         result := FORMAT(pValue, 0, '<Precision,5:5><Sign><Integer><Decimals>');
         result := CONVERTSTR(result, ',', '.');
     end;
 
+    
     procedure CreateVatAmountLines(var Purchline: Record 39);
     var
         TempPurchLine: Record 39 temporary;
@@ -969,6 +982,7 @@ codeunit 66000 "Easy Invoice Webservice"
         TempVATAmountLineOrg.MODIFYALL("VAT Amount", 0);
     end;
 
+    
     procedure AdjustVatAmount(var PurchLine: Record 39);
     var
         TempPurchLine: Record 39 temporary;
@@ -978,6 +992,7 @@ codeunit 66000 "Easy Invoice Webservice"
         //PurchLine.UpdateVATOnLines(1,PurchHdr,PurchLine,TempVATAmountLineOrg);
     end;
 
+    
     procedure CheckCharge(var PurchLine: Record 39);
     var
         AssignItemChargePurch: Codeunit 5805;
@@ -1042,6 +1057,7 @@ codeunit 66000 "Easy Invoice Webservice"
         END;
     end;
 
+    
     procedure InsertInvLineFromRetShptLine(var PurchLine: Record 39);
     var
         PurchOrderLine: Record 39;
@@ -1129,6 +1145,7 @@ codeunit 66000 "Easy Invoice Webservice"
         ItemTrackingMgt.CopyHandledItemTrkgToInvLine(PurchOrderLine, PurchLine);
     end;
 
+    
     procedure ConvertDate(parTxt: Text[1024]; var parDate: Date): Text[20];
     var
         DD: Integer;
