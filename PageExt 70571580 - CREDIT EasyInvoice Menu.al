@@ -19,7 +19,7 @@ pageextension 70571580 "CREDIT EasyInvoice Menu" extends "Business Manager Role 
                 }
                 action("Import EasyInvoiceID")
                 {
-                    RunObject = xmlport "CREDIT Import EasyInvoiceID";
+                    RunObject = xmlport "CREDIT Import EasyInvoice ID";
                     ApplicationArea = ALL;
                 }
 

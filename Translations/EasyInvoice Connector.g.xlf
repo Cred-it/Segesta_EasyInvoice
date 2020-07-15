@@ -23,15 +23,15 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table CREDIT Easy Invoice Connection - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Page 192318452 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Page 1287818463 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>EasyInvoice Setup</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page CREDIT EasyInvoice - Setup - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page CREDIT EasyInvoice Setup - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Page 192318452 - Control 2445482498 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Page 1287818463 - Control 2445482498 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>General</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page CREDIT EasyInvoice - Setup - Control General - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page CREDIT EasyInvoice Setup - Control General - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 580295018 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>CREDIT EasyInv Connection List</source>
@@ -93,10 +93,10 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">XmlPort CREDIT EasyInvoice Import Resp - Property Caption</note>
         </trans-unit>
-        <trans-unit id="XmlPort 3269090542 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>CREDIT Import EasyInvoiceID</source>
+        <trans-unit id="XmlPort 2220580958 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>CREDIT Import EasyInvoice ID</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">XmlPort CREDIT Import EasyInvoiceID - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">XmlPort CREDIT Import EasyInvoice ID - Property Caption</note>
         </trans-unit>
         <trans-unit id="PageExtension 2199475619 - Action 2083976528 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2458191494">
           <source>Easy Invoice Menu</source>

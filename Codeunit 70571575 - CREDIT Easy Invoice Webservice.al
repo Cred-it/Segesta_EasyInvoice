@@ -1171,14 +1171,15 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
         J : JsonObject;
         Reponsetext : Text;
     begin
-        if client.get('https://api.ipfy.org?format=json',Response) then 
+        if client.get('https://api.ipify.org?format=json',Response) then 
+                    
           if Response.IsSuccessStatusCode() then 
           begin
             response.content().ReadAs(Reponsetext);
             j.ReadFrom(Reponsetext);
             exit(getJsonTextField(j,'ip'));
           end;
-        
+        EXIT('*error api*');
 
     end;
     procedure getJsonTextField(O : JsonObject;Member : Text) : text;
@@ -1187,6 +1188,8 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
     begin
         IF O.Get(Member,Result) THEN
           exit(result.AsValue().AsText());
+        
+        EXIT('*error json*');
     end;
 
     // *****************************************

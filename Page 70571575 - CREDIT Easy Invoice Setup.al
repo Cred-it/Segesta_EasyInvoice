@@ -9,7 +9,7 @@ page 70571575 "CREDIT EasyInvoice Setup"
     Caption = 'EasyInvoice Setup';
     PageType = Card;
     SourceTable = "CREDIT Easy Invoice setup";
-    
+
     layout
     {
         area(content)
@@ -23,10 +23,11 @@ page 70571575 "CREDIT EasyInvoice Setup"
                     Editable = true;
 
                 }
-                field("Ip Server"; webserviceCU.IPget() )
+                field("Ip Server"; webserviceCU.IPget())
                 {
                     ApplicationArea = All;
                     Editable = true;
+
 
                 }
             }
@@ -34,7 +35,7 @@ page 70571575 "CREDIT EasyInvoice Setup"
     }
 
     var
-    webserviceCU : Codeunit "CREDIT Easy Invoice Webservice";
+        webserviceCU: Codeunit "CREDIT Easy Invoice Webservice";
 
 
 }
