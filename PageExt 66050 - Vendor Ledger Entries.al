@@ -1,4 +1,4 @@
-pageextension 66050 EasyPostVendorLeConnectExt extends "Vendor Ledger Entries"
+pageextension 66050 "CREDIT EasyInv VendLed Entries" extends "Vendor Ledger Entries"
 {
 
     layout
@@ -13,8 +13,7 @@ pageextension 66050 EasyPostVendorLeConnectExt extends "Vendor Ledger Entries"
                 Enabled = true;
                 Lookup = true;
 
-                trigger OnLookup(var Text: Text): Boolean
-
+                trigger OnAssistEdit()    
                 begin
                     Hyperlink(EasyInvoiceWeb.HyperText(EasyInvoiceCon.EasyInvoiceID));
                 end;
@@ -30,8 +29,8 @@ pageextension 66050 EasyPostVendorLeConnectExt extends "Vendor Ledger Entries"
     end;
 
     var
-        EasyInvoiceCon: record "Easy Invoice Connection";
-        EasyInvoiceWeb: Codeunit "Easy Invoice Webservice";
+        EasyInvoiceCon: record "CREDIT Easy Invoice Connection";
+        EasyInvoiceWeb: Codeunit "CREDIT Easy Invoice Webservice";
 
 }
 

@@ -1,5 +1,4 @@
-table 66001
- "Easy Invoice Connection"
+table 66001  "CREDIT Easy Invoice Connection"
 {
     // version EasyInvoice 2020.06.06.22
 

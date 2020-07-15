@@ -1,4 +1,4 @@
-page 66001 "EasyInvoice Connection List"
+page 66001 "CREDIT EasyInv Connection List"
 {
     //version EasyInvoice Connector
     //Created

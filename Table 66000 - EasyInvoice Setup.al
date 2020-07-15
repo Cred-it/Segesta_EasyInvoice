@@ -1,4 +1,4 @@
-table 66000 "Easy Invoice setup"
+table 66000 "CREDIT Easy Invoice setup"
 {
     // version EasyInvoice 2020.06.06.22
 

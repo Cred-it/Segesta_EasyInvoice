@@ -1,4 +1,4 @@
-page 66000 "EasyInvoice - Setup"
+page 66000 "CREDIT EasyInvoice Setup"
 {
     // version EasyInvoice Connector
     // EasyInvoice Connector 2020-06-01 Cred-IT Object created
@@ -8,7 +8,7 @@ page 66000 "EasyInvoice - Setup"
     ModifyAllowed = true;
     Caption = 'EasyInvoice Setup';
     PageType = Card;
-    SourceTable = "Easy Invoice setup";
+    SourceTable = "CREDIT Easy Invoice setup";
 
     layout
     {

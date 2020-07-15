@@ -1,4 +1,4 @@
-xmlport 66000 "Easy Invoice MasterDataV2"
+xmlport 66000 "CREDIT EasyInv MasterData"
 {
     // version EasyInvoice 2020.06.27.01
 

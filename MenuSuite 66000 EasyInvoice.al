@@ -1,4 +1,4 @@
-pageextension 66000 ExtendMenuArea extends "Business Manager Role Center"
+pageextension 66000 "CREDIT EasyInvoice Menu" extends "Business Manager Role Center"
 {
 
     actions
@@ -9,17 +9,17 @@ pageextension 66000 ExtendMenuArea extends "Business Manager Role Center"
             {
                 action("Easy Invoice")
                 {
-                    RunObject = page "EasyInvoice - Setup";
+                    RunObject = page "CREDIT EasyInvoice Setup";
                     ApplicationArea = All;
                 }
                 action("Easy Invoice Connection")
                 {
-                    RunObject = page "EasyInvoice Connection List";
+                    RunObject = page "CREDIT EasyInv Connection List";
                     ApplicationArea = All;
                 }
                 action("Import EasyInvoiceID")
                 {
-                    RunObject = xmlport ImportEasyInvoiceID;
+                    RunObject = xmlport "CREDIT Import EasyInvoiceID";
                     ApplicationArea = ALL;
                 }
 

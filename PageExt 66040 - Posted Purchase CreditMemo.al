@@ -1,4 +1,4 @@
-pageextension 66040 EasyPostPurchCredConnectExt extends "Posted Purchase Credit Memo"
+pageextension 66040 "CREDIT EasyInv Posted Cr.Memo" extends "Posted Purchase Credit Memo"
 {
 
     layout
@@ -29,8 +29,8 @@ pageextension 66040 EasyPostPurchCredConnectExt extends "Posted Purchase Credit 
     end;
 
     var
-        EasyInvoiceCon: record "Easy Invoice Connection";
-        EasyInvoiceWeb: Codeunit "Easy Invoice Webservice";
+        EasyInvoiceCon: record "CREDIT Easy Invoice Connection";
+        EasyInvoiceWeb: Codeunit "CREDIT Easy Invoice Webservice";
 
 }
 

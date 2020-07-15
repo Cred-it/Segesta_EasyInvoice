@@ -1,4 +1,4 @@
-pageextension 66020 EasyCreditConnectExt extends "Purchase Credit Memo"
+pageextension 66020 "CREDIT EasyInv Purch Cr.Memo" extends "Purchase Credit Memo"
 {
 
     layout
@@ -29,8 +29,8 @@ pageextension 66020 EasyCreditConnectExt extends "Purchase Credit Memo"
     end;
 
     var
-        EasyInvoiceCon: record "Easy Invoice Connection";
-        EasyInvoiceWeb: Codeunit "Easy Invoice Webservice";
+        EasyInvoiceCon: record "CREDIT Easy Invoice Connection";
+        EasyInvoiceWeb: Codeunit "CREDIT Easy Invoice Webservice";
 
 }
 

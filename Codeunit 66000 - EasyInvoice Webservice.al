@@ -1,4 +1,4 @@
-codeunit 66000 "Easy Invoice Webservice"
+codeunit 66000 "CREDIT Easy Invoice Webservice"
 {
     // version EasyInvoice 2020.06.22.01
 
@@ -89,7 +89,7 @@ codeunit 66000 "Easy Invoice Webservice"
 
     procedure HyperText(EasyInvoiceID: Integer) HyperTxt: Text[250];
     var
-        EasyInvoiceSetup: Record "Easy Invoice setup";
+        EasyInvoiceSetup: Record "CREDIT Easy Invoice setup";
     begin
         EasyInvoiceSetup.GET;
         EasyInvoiceSetup.TESTFIELD("Hyperlink EasyInvoice");
@@ -104,8 +104,8 @@ codeunit 66000 "Easy Invoice Webservice"
         VendorLedgerEntry: Record "Vendor Ledger Entry";
         PurchInvHeader: Record "Purch. Inv. Header";
         PurchCrMemoHeader: Record "Purch. Cr. Memo Hdr.";
-        lEasyInvConnect: Record "Easy Invoice Connection";
-        nEasyInvConnect: Record "Easy Invoice Connection";
+        lEasyInvConnect: Record "CREDIT Easy Invoice Connection";
+        nEasyInvConnect: Record "CREDIT Easy Invoice Connection";
     begin
 
         //GET EasyInvConnect
@@ -333,7 +333,7 @@ codeunit 66000 "Easy Invoice Webservice"
 
     procedure CreateEasyInvConnection(ParEasyInvoiceNo: Integer; var parPurchHdr: Record "Purchase Header");
     var
-        lEasyInvConnect: Record "Easy Invoice Connection";
+        lEasyInvConnect: Record "CREDIT Easy Invoice Connection";
 
     begin
 

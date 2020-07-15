@@ -1,4 +1,4 @@
-xmlport 66003 "Easy Invoice Import XMLV2 Resp"
+xmlport 66003 "CREDIT EasyInvoice Import Resp"
 {
     // version EasyInvoice 2020.02.07.01
 
@@ -105,7 +105,7 @@ xmlport 66003 "Easy Invoice Import XMLV2 Resp"
         PurchHdr : Record "Purchase Header";
         PurchInv : Record "Purch. Inv. Header";
         PurchCrMemo : Record "Purch. Cr. Memo Hdr.";
-        lCduEasyInvoice : Codeunit "Easy Invoice Webservice";
+        lCduEasyInvoice : Codeunit "CREDIT Easy Invoice Webservice";
     begin
     end;
 

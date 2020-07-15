@@ -1,4 +1,4 @@
-xmlport 66004 ImportEasyInvoiceID
+xmlport 66004 "CREDIT Import EasyInvoiceID"
 {
     // version EasyInvoice 2020.06.29.01
 
@@ -11,7 +11,7 @@ xmlport 66004 ImportEasyInvoiceID
     {
         textelement(Root)
         {
-            tableelement("Easy Invoice Connection"; "Easy Invoice Connection")
+            tableelement("Easy Invoice Connection"; "CREDIT Easy Invoice Connection")
             {
                 XmlName = 'EasyInvoiceConnection';
                 UseTemporary = false;
@@ -29,7 +29,7 @@ xmlport 66004 ImportEasyInvoiceID
                 trigger OnAfterInsertRecord()
                 var
                     VendLedEntry: record "Vendor Ledger Entry";
-                    lEasyINvConnect: Record "Easy Invoice Connection";
+                    lEasyINvConnect: Record "CREDIT Easy Invoice Connection";
                 begin
 
                     IF ("Easy Invoice Connection".Type = "Easy Invoice Connection".Type::"Posted Purchase Credit Memo") OR

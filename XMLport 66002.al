@@ -1,4 +1,4 @@
-xmlport 66002 "Easy Invoice Import XMLV2"
+xmlport 66002 "CREDIT EasyInvoice Import"
 {
     // version EasyInvoice 2020.02.07.01
 
@@ -394,8 +394,8 @@ xmlport 66002 "Easy Invoice Import XMLV2"
         PurchHdr: Record "Purchase Header";
         //PurchInv: Record 122;
         //PurchCrMemo: Record 124;
-        lEasyInvoiceConnect: Record "Easy Invoice Connection";
-        lCduEasyInvoice: Codeunit "Easy Invoice Webservice";
+        lEasyInvoiceConnect: Record "CREDIT Easy Invoice Connection";
+        lCduEasyInvoice: Codeunit "CREDIT Easy Invoice Webservice";
 
     begin
         //****  Error Process ****
@@ -552,7 +552,7 @@ xmlport 66002 "Easy Invoice Import XMLV2"
         PurchInvHeader: Record "Purch. Inv. Header";
         PurchCrMemoHeader: Record "Purch. Cr. Memo Hdr.";
         PurchHeader: Record "Purchase Header";
-        lEasyInvConnect: Record "Easy Invoice Connection";
+        lEasyInvConnect: Record "CREDIT Easy Invoice Connection";
     begin
 
         //Betaald / Gedeeltelijk betaald
@@ -628,13 +628,13 @@ xmlport 66002 "Easy Invoice Import XMLV2"
 
     local procedure CheckExistsEasyInvoiceID(EasyInvId: Integer): Boolean;
     var
-        lPurchHdr: Record 38;
-        lPurchInvHeader: Record 122;
+        lPurchHdr: Record "Purchase Header";
+        lPurchInvHeader: Record "Purch. Inv. Header";
         PurchHdrExistsTxt: TextConst ENU = 'Purchase Invoice/Credit %1 exists for EasyInvoice ID %2', NLD = 'Inkoopfactuur/credit %1 bestaat al voor EasyInvoice ID %2';
         PurchInvHdrExistsTxt: TextConst ENU = 'Posted Purchase Invoice %1 exists for EasyInvoice ID %2', NLD = 'Geboekte Inkoopfactuur %1 bestaat al voor EasyInvoice ID %2';
-        lPurchCrMemoHdr: Record 124;
+        lPurchCrMemoHdr: Record "Purch. Cr. Memo Hdr.";
         PurchCrMemoHdrExistsTxt: TextConst ENU = 'Posted Purchase Credit Memo %1 exists for EasyInvoice ID %2', NLD = 'Geboekte Credit Inkoopfactuur %1 bestaat al voor EasyInvoice ID %2';
-        EasyInvoiceConnect: record "Easy Invoice Connection";
+        EasyInvoiceConnect: record "CREDIT Easy Invoice Connection";
     begin
 
         EasyInvoiceConnect.SetCurrentKey(EasyInvoiceID);
@@ -763,7 +763,7 @@ xmlport 66002 "Easy Invoice Import XMLV2"
         PurchInvHeader: Record "Purch. Inv. Header";
         PurchCrMemoHeader: Record "Purch. Cr. Memo Hdr.";
         PurchHeader: Record "Purchase Header";
-        EasyInvoiceConnect: record "Easy Invoice Connection";
+        EasyInvoiceConnect: record "CREDIT Easy Invoice Connection";
     begin
 
         EasyInvoiceConnect.SetCurrentKey(EasyInvoiceID);

@@ -1,4 +1,4 @@
-pageextension 66010 EasyInvoiceConnectExt extends "Purchase Invoice"
+pageextension 66010 "CREDIT EasyInv Purch Invoice" extends "Purchase Invoice"
 {
 
     layout
@@ -31,8 +31,8 @@ pageextension 66010 EasyInvoiceConnectExt extends "Purchase Invoice"
     end;
 
     var
-        EasyInvoiceCon: record "Easy Invoice Connection";
-        EasyInvoiceWeb: Codeunit "Easy Invoice Webservice";
+        EasyInvoiceCon: record "CREDIT Easy Invoice Connection";
+        EasyInvoiceWeb: Codeunit "CREDIT Easy Invoice Webservice";
 
 }
 

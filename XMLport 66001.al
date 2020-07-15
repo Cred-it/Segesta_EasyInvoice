@@ -1,4 +1,4 @@
-xmlport 66001 "Easy Invoice MasterDataFiltV2"
+xmlport 66001 "CREDIT EasyInv MasterData filt"
 {
     // version EasyInvoice 2020.06.27.01
 
