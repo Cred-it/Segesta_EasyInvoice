@@ -1,4 +1,4 @@
-pageextension 66000 "CREDIT EasyInvoice Menu" extends "Business Manager Role Center"
+pageextension 70571580 "CREDIT EasyInvoice Menu" extends "Business Manager Role Center"
 {
 
     actions
