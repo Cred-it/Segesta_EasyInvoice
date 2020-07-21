@@ -17,12 +17,17 @@ codeunit 70571576 "CREDIT Install EasyInvoiceAPP"
     local procedure HandleFreshInstall();
     var
         WebserviceMgt: Codeunit "Web Service Management";
-        Webservtype: Option "Web Service";
+        //WebService: Record "Web Service";
+        webOption : Option ,,,,,"Codeunit",,,"Page","Query",,,,,,,,,,;
+            
+        //web : record web
+
 
     begin
         //Create webservice EasyInvoice
-        //WebserviceMgt.CreateWebService(Webservtype,66000,'EasyInvoice',true);     
-        WebserviceMgt.CreateTenantWebService(Webservtype, 66000, 'EasyInvoice', true);
+        //WebserviceMgt.CreateWebSer
+        weboption := weboption::codeunit;
+        WebserviceMgt.CreateTenantWebService(webOption, 70571575, 'EasyInvoice', true);
     end;
 
     local procedure HandleReinstall();

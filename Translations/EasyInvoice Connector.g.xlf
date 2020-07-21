@@ -103,20 +103,20 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension CREDIT EasyInvoice Menu - Action Easy Invoice Menu - Property Caption</note>
         </trans-unit>
-        <trans-unit id="PageExtension 2199475619 - Action 2091653841 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2458191494">
-          <source>Easy Invoice</source>
+        <trans-unit id="PageExtension 2199475619 - Action 1425177724 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2458191494">
+          <source>Easy Invoice Setup</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension CREDIT EasyInvoice Menu - Action Easy Invoice - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension CREDIT EasyInvoice Menu - Action Easy Invoice Setup - Property Caption</note>
         </trans-unit>
         <trans-unit id="PageExtension 2199475619 - Action 2272547099 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2458191494">
           <source>Easy Invoice Connection</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension CREDIT EasyInvoice Menu - Action Easy Invoice Connection - Property Caption</note>
         </trans-unit>
-        <trans-unit id="PageExtension 2199475619 - Action 1403250401 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2458191494">
-          <source>Import EasyInvoiceID</source>
+        <trans-unit id="PageExtension 2199475619 - Action 1390557909 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2458191494">
+          <source>Import EasyInvoice ID's</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension CREDIT EasyInvoice Menu - Action Import EasyInvoiceID - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension CREDIT EasyInvoice Menu - Action Import EasyInvoice ID's - Property Caption</note>
         </trans-unit>
       </group>
     </body>

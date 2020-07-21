@@ -7,7 +7,7 @@ pageextension 70571580 "CREDIT EasyInvoice Menu" extends "Business Manager Role 
         {
             group("Easy Invoice Menu")
             {
-                action("Easy Invoice")
+                action("Easy Invoice Setup")
                 {
                     RunObject = page "CREDIT EasyInvoice Setup";
                     ApplicationArea = All;
@@ -17,7 +17,7 @@ pageextension 70571580 "CREDIT EasyInvoice Menu" extends "Business Manager Role 
                     RunObject = page "CREDIT EasyInv Connection List";
                     ApplicationArea = All;
                 }
-                action("Import EasyInvoiceID")
+                action("Import EasyInvoice ID's")
                 {
                     RunObject = xmlport "CREDIT Import EasyInvoice ID";
                     ApplicationArea = ALL;
