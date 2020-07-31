@@ -494,7 +494,7 @@ xmlport 70571577
     end;
 
     var
-        Text000: TextConst ENU = 'An error has occurred while reading the picture on XmlPort %1', NLD = 'Fout bij lezen van afbeelding op XmlPort %1';
+        Text000: label 'An error has occurred while reading the picture on XmlPort %1';//, NLD = 'Fout bij lezen van afbeelding op XmlPort %1';
         PurchHdr: Record 38;
         Notatype: Integer;
         EasyInvoiceLine: Integer;
@@ -631,10 +631,10 @@ xmlport 70571577
     var
         lPurchHdr: Record "Purchase Header";
         lPurchInvHeader: Record "Purch. Inv. Header";
-        PurchHdrExistsTxt: TextConst ENU = 'Purchase Invoice/Credit %1 exists for EasyInvoice ID %2', NLD = 'Inkoopfactuur/credit %1 bestaat al voor EasyInvoice ID %2';
-        PurchInvHdrExistsTxt: TextConst ENU = 'Posted Purchase Invoice %1 exists for EasyInvoice ID %2', NLD = 'Geboekte Inkoopfactuur %1 bestaat al voor EasyInvoice ID %2';
+        PurchHdrExistsTxt: Label 'Purchase Invoice/Credit %1 exists for EasyInvoice ID %2'; //, NLD = 'Inkoopfactuur/credit %1 bestaat al voor EasyInvoice ID %2';
+        PurchInvHdrExistsTxt: Label 'Posted Purchase Invoice %1 exists for EasyInvoice ID %2';//, NLD = 'Geboekte Inkoopfactuur %1 bestaat al voor EasyInvoice ID %2';
         lPurchCrMemoHdr: Record "Purch. Cr. Memo Hdr.";
-        PurchCrMemoHdrExistsTxt: TextConst ENU = 'Posted Purchase Credit Memo %1 exists for EasyInvoice ID %2', NLD = 'Geboekte Credit Inkoopfactuur %1 bestaat al voor EasyInvoice ID %2';
+        PurchCrMemoHdrExistsTxt: label 'Posted Purchase Credit Memo %1 exists for EasyInvoice ID %2'; //, NLD = 'Geboekte Credit Inkoopfactuur %1 bestaat al voor EasyInvoice ID %2';
         EasyInvoiceConnect: record "CREDIT Easy Invoice Connection";
     begin
 
@@ -720,10 +720,10 @@ xmlport 70571577
     var
         lPurchHdr: Record 38;
         lPurchInvHeader: Record 122;
-        PurchHdrExistsTxt: TextConst ENU = 'Purchase Invoice/Credit %1 exists for Vendor Invoice %2', NLD = 'Inkoopfactuur/credit %1 bestaat al voor factuurnummer leverancier %2';
-        PurchInvHdrExistsTxt: TextConst ENU = 'Posted Purchase Invoice %1 exists for VendorInvoice No %2', NLD = 'Geboekte Inkoopfactuur %1 bestaat al voor factuurnr. leverancier %2';
+        PurchHdrExistsTxt: label 'Purchase Invoice/Credit %1 exists for Vendor Invoice %2';//, NLD = 'Inkoopfactuur/credit %1 bestaat al voor factuurnummer leverancier %2';
+        PurchInvHdrExistsTxt: label 'Posted Purchase Invoice %1 exists for VendorInvoice No %2';//, NLD = 'Geboekte Inkoopfactuur %1 bestaat al voor factuurnr. leverancier %2';
         lPurchCrMemoHdr: Record 124;
-        PurchCrMemoHdrExistsTxt: TextConst ENU = 'Posted Purchase Credit Memo %1 exists for Vendor Cr. memo No %2', NLD = 'Geboekte Credit Inkoopfactuur %1 bestaat al voor Credit  factuur no. Leverancier %2';
+        PurchCrMemoHdrExistsTxt: label 'Posted Purchase Credit Memo %1 exists for Vendor Cr. memo No %2';//, NLD = 'Geboekte Credit Inkoopfactuur %1 bestaat al voor Credit  factuur no. Leverancier %2';
     begin
         lPurchHdr.SETRANGE("Vendor Invoice No.", VendorInvoice);
         IF lPurchHdr.FINDFIRST THEN BEGIN

@@ -33,7 +33,7 @@ page 70571576 "CREDIT EasyInv Connection List"
             }
             group(List)
             {
-                Caption = 'Lijst';
+                Caption = 'List';
             }
             repeater(Group)
             {

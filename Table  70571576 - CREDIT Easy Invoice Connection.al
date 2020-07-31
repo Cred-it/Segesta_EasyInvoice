@@ -7,16 +7,16 @@ table 70571576 "CREDIT Easy Invoice Connection"
     {
         field(1; Type; Option)
         {
-            CaptionML = ENU = 'Document Type',
-                        NLD = 'Document Soort';
-            OptionCaptionML = ENU = 'Purchase Invoice,Purchase Credit Memo,Posted Purchase Invoice,Posted Purchase Credit Memo,Vendor Ledger Entry',
-                              NLD = 'Inkoopfactuur,Inkoop Creditfactuur,Geboekte Inkoopfactuur,Geboekte Inkoop Creditfactuur,Leverancierspost';
+            //CaptionML = ENU = 'Document Type',
+            //            NLD = 'Document Soort';
+            //OptionCaptionML = ENU = 'Purchase Invoice,Purchase Credit Memo,Posted Purchase Invoice,Posted Purchase Credit Memo,Vendor Ledger Entry',
+            //                  NLD = 'Inkoopfactuur,Inkoop Creditfactuur,Geboekte Inkoopfactuur,Geboekte Inkoop Creditfactuur,Leverancierspost';
             OptionMembers = "Purchase Invoice","Purchase Credit Memo","Posted Purchase Invoice","Posted Purchase Credit Memo","Vendor Ledger Entry";
         }
         field(2; "Document No."; Code[20])
         {
-            CaptionML = ENU = 'Document No.',
-                        NLD = 'Document Nr.';
+            //CaptionML = ENU = 'Document No.',
+            //            NLD = 'Document Nr.';
             TableRelation = IF (Type = CONST("Purchase Invoice")) "Purchase Header"."No." WHERE("Document Type" = CONST(Invoice))
             ELSE
             IF (Type = CONST("Purchase Credit Memo")) "Purchase Header"."No." WHERE("Document Type" = CONST("Credit Memo"))
@@ -29,13 +29,13 @@ table 70571576 "CREDIT Easy Invoice Connection"
         }
         field(10; EasyInvoiceID; Integer)
         {
-            CaptionML = ENU = 'EasyInvoiceID',
-                        NLD = 'EasyInvoiceID';
+            //CaptionML = ENU = 'EasyInvoiceID',
+            //            NLD = 'EasyInvoiceID';
         }
         field(100; Datestamp; DateTime)
         {
-            CaptionML = ENU = 'Datestamp',
-                        NLD = 'Datumstempel';
+            //CaptionML = ENU = 'Datestamp',
+            //            NLD = 'Datumstempel';
         }
     }
 

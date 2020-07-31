@@ -99,6 +99,8 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
             EXIT(STRSUBSTNO(EasyInvoiceSetup."Hyperlink EasyInvoice", EasyInvoiceID));
     end;
 
+    [Scope('onPrem')]
+    //[ServiceEnabled]
     procedure EasyInvoicePost(var PurchHeader: Record "Purchase Header"; var PurchInvHeaderNo: Code[20]; var PurchCrMemoHeaderNo: Code[20]);
     var
         VendorLedgerEntry: Record "Vendor Ledger Entry";
@@ -129,7 +131,7 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
                         nEasyInvConnect.type := nEasyInvConnect.type::"Posted Purchase Invoice";
                         nEasyInvConnect."Document No." := PurchInvHeaderNo;
                         IF nEasyInvConnect.Insert(TRUE) THEN
-                          lEasyInvConnect.Delete();
+                            lEasyInvConnect.Delete();
 
                         IF VendorLedgerEntry.GET(PurchInvHeader."Vendor Ledger Entry No.") THEN BEGIN
                             nEasyInvConnect.Type := nEasyInvConnect.Type::"Vendor Ledger Entry";
@@ -148,7 +150,7 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
                         nEasyInvConnect.type := nEasyInvConnect.type::"Posted Purchase Credit Memo";
                         nEasyInvConnect."Document No." := PurchCrMemoHeaderNo;
                         IF nEasyInvConnect.Insert(TRUE) THEN
-                          lEasyInvConnect.Delete();
+                            lEasyInvConnect.Delete();
 
                         IF VendorLedgerEntry.GET(PurchCrMemoHeader."Vendor Ledger Entry No.") THEN BEGIN
                             nEasyInvConnect.Type := nEasyInvConnect.Type::"Vendor Ledger Entry";
@@ -179,6 +181,7 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
     end;
 
     //[Scope('Personalization')]
+    [Scope('onPrem')]
     procedure CreateTmp(var pTmpHeader: Record "Purchase Header" temporary; var pTmpLine: Record "Purchase Line" temporary; var pTmpDim: Record "Dimension Value" temporary; pEasyInvoiceID: integer);
     begin
         gTmpPurchHdr.DELETEALL;
@@ -207,6 +210,7 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
             UNTIL pTmpDim.NEXT = 0;
     end;
 
+    [Scope('onPrem')]
     procedure EasyInvoiceHeader(var Rec: Record "Purchase Header");
     var
         ReleasePurch: Codeunit "Release Purchase Document";
@@ -331,6 +335,7 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
         Rec := PurchHdr;
     end;
 
+    [Scope('onPrem')]
     procedure CreateEasyInvConnection(ParEasyInvoiceNo: Integer; var parPurchHdr: Record "Purchase Header");
     var
         lEasyInvConnect: Record "CREDIT Easy Invoice Connection";
@@ -349,8 +354,9 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
 
     end;
 
+    [Scope('onPrem')]
     procedure ReadEasyInvoiceLine(ParEasyInvoiceNo: Integer);
-    
+
     var
         SQLStatment: Text[1000];
         PurchLine: Record 39;
@@ -603,8 +609,9 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
             UNTIL gTmpPurchLine.NEXT = 0;
 
     end;
-    
-    
+
+
+    [Scope('onPrem')]
     procedure ReadEasyInvoiceDimension(ParEasyLineNo: Integer; locDimension1: Code[20]; locDimension2: Code[20]) DimEntrySetID: Integer;
     var
         DimSetEntryTmp: Record 480 temporary;
@@ -640,8 +647,8 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
         EXIT(DimMgt.GetDimensionSetID(DimSetEntryTmp));
     end;
 
-    
-    
+
+    [Scope('onPrem')]
     procedure ValidateChecks(DocNo: Code[20]);
     var
         LocPurchHdr: Record 38;
@@ -727,7 +734,7 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
         SELECTLATESTVERSION;
     end;
 
-    
+    [Scope('onPrem')]
     procedure CheckBTW(ParEasyInvoiceLineNo: Integer; ParPurchLine: Record 39);
     var
         SQLStatment: Text[1024];
@@ -781,7 +788,7 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
         //SQLCommandUpdate.ExecuteNonQuery();
     end;
 
-    
+    [Scope('onPrem')]
     procedure CheckBank(Vendor: Code[20]; BankNo: Text[30]): Code[20];
     var
         LocVendBankAcc: Record 288;
@@ -801,13 +808,13 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
         END;
     end;
 
-    
+    [Scope('onPrem')]
     procedure ExitStatusHeader() ExitTxt: Text[250];
     begin
         //EXIT(StatusHeader);
     end;
 
-    
+    [Scope('onPrem')]
     procedure InsertInvLineFromRcptLine(var PurchLine: Record 39);
     var
         PurchInvHeader: Record 38;
@@ -900,12 +907,13 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
             ItemTrackingMgt.CopyHandledItemTrkgToInvLine(PurchOrderLine, PurchLine);
     end;
 
-    
+
+    [Scope('onPrem')]
     procedure InsertPurchExtText(var PurchLine: Record 39; CommentText: Text[50]);
     var
         ToPurchLine: Record 39;
-        Text000: TextConst ENU = 'Receipt No. %1:', NLD = 'Ontvangstnr. %1:';
-        Text001: TextConst ENU = 'Return Shipment No. %1:', NLD = 'Retourverzendnr. %1:';
+        Text000: label 'Receipt No %1'; //ENU = 'Receipt No. %1:', NLD = 'Ontvangstnr. %1:';
+        Text001: label 'Return Shipment No. %1:';//, NLD = 'Retourverzendnr. %1:';
     begin
         ToPurchLine.RESET;
         ToPurchLine.SETRANGE("Document Type", PurchHdr."Document Type");
@@ -932,13 +940,13 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
         IF ToPurchLine.INSERT THEN;
     end;
 
-    
+    [Scope('onPrem')]
     procedure SetOrderMactch(ParOM: Boolean);
     begin
         OrderMatch := ParOM
     end;
 
-    
+    [Scope('onPrem')]
     procedure CheckBlockDeellev(var PurchLine: Record 39; var pPartdel: Boolean);
     var
         PurchRcpLine: Record 121;
@@ -964,14 +972,14 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
             gPartdel := TRUE;
     end;
 
-    
+    [Scope('onPrem')]
     procedure ConvDecToText(pValue: Decimal) result: Text[30];
     begin
         result := FORMAT(pValue, 0, '<Precision,5:5><Sign><Integer><Decimals>');
         result := CONVERTSTR(result, ',', '.');
     end;
 
-    
+    [Scope('onPrem')]
     procedure CreateVatAmountLines(var Purchline: Record 39);
     var
         TempPurchLine: Record 39 temporary;
@@ -982,7 +990,7 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
         TempVATAmountLineOrg.MODIFYALL("VAT Amount", 0);
     end;
 
-    
+    [Scope('onPrem')]
     procedure AdjustVatAmount(var PurchLine: Record 39);
     var
         TempPurchLine: Record 39 temporary;
@@ -992,7 +1000,7 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
         //PurchLine.UpdateVATOnLines(1,PurchHdr,PurchLine,TempVATAmountLineOrg);
     end;
 
-    
+    [Scope('onPrem')]
     procedure CheckCharge(var PurchLine: Record 39);
     var
         AssignItemChargePurch: Codeunit 5805;
@@ -1057,7 +1065,7 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
         END;
     end;
 
-    
+    [Scope('onPrem')]
     procedure InsertInvLineFromRetShptLine(var PurchLine: Record 39);
     var
         PurchOrderLine: Record 39;
@@ -1067,9 +1075,9 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
         ExtTextLine: Boolean;
         PurchInvHeader: Record 38;
         PurchRetShpLine: Record 6651;
-        Text000: TextConst ENU = 'Return Shipment No. %1:', NLD = 'Retourverzendnr. %1:';
-        Text001: TextConst ENU = 'The program cannot find this purchase line.', NLD = 'Kan deze inkoopregel niet vinden.';
-        Text002: TextConst ENU = 'Exp. rec. date:', NLD = 'Verw. ontvangstdatum: %1';
+        Text000: label 'Return Shipment No. %1:'; //, NLD = 'Retourverzendnr. %1:';
+        Text001: label 'The program cannot find this purchase line.'; //, NLD = 'Kan deze inkoopregel niet vinden.';
+        Text002: label 'Exp. rec. date:';//, NLD = 'Verw. ontvangstdatum: %1';
         ReturnShipmentHeader: Record 6650;
     begin
 
@@ -1145,7 +1153,7 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
         ItemTrackingMgt.CopyHandledItemTrkgToInvLine(PurchOrderLine, PurchLine);
     end;
 
-    
+    [Scope('onPrem')]
     procedure ConvertDate(parTxt: Text[1024]; var parDate: Date): Text[20];
     var
         DD: Integer;
@@ -1164,37 +1172,46 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
     // *****************************************
     // *****************************************
     // Example JSon Webcall
-    procedure IPget() : Text;
+    procedure IPget(): Text;
     var
-        client : HttpClient;
-        Response : HttpResponseMessage;
-        J : JsonObject;
-        Reponsetext : Text;
+        client: HttpClient;
+        Response: HttpResponseMessage;
+        J: JsonObject;
+        Reponsetext: Text;
     begin
-        if client.get('https://api.ipify.org?format=json',Response) then 
-                    
-          if Response.IsSuccessStatusCode() then 
-          begin
-            response.content().ReadAs(Reponsetext);
-            j.ReadFrom(Reponsetext);
-            exit(getJsonTextField(j,'ip'));
-          end;
+        if client.get('https://api.ipify.org?format=json', Response) then
+            if Response.IsSuccessStatusCode() then begin
+                response.content().ReadAs(Reponsetext);
+                j.ReadFrom(Reponsetext);
+                exit(getJsonTextField(j, 'ip'));
+            end;
         EXIT('*error api*');
 
     end;
-    procedure getJsonTextField(O : JsonObject;Member : Text) : text;
+
+    procedure WebServiceGet() : Text
+    
     var 
-     result : JsonToken; 
-    begin
-        IF O.Get(Member,Result) THEN
-          exit(result.AsValue().AsText());
+        WebservicePage : page "Web Services";
         
+    begin
+
+    end;    
+
+    procedure getJsonTextField(O: JsonObject; Member: Text): text;
+    var
+        result: JsonToken;
+    begin
+        IF O.Get(Member, Result) THEN
+            exit(result.AsValue().AsText());
+
         EXIT('*error json*');
     end;
 
     // *****************************************
     // *****************************************
-    
+
+    [Scope('onPrem')]
     [EventSubscriber(ObjectType::Codeunit, 90, 'OnAfterPostPurchaseDoc', '', true, true)]
     local procedure PostInvoice(var PurchaseHeader: Record 38; var GenJnlPostLine: Codeunit 12; PurchRcpHdrNo: Code[20]; RetShptHdrNo: Code[20]; PurchInvHdrNo: Code[20]; PurchCrMemoHdrNo: Code[20]);
     begin

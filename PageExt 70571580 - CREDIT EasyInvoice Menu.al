@@ -1,4 +1,4 @@
-pageextension 70571580 "CREDIT EasyInvoice Menu" extends "Business Manager Role Center"
+pageextension 70571580 "CREDIT EasyInvoice Menu" extends "Purchasing Manager Role Center"
 {
 
     actions
@@ -21,6 +21,12 @@ pageextension 70571580 "CREDIT EasyInvoice Menu" extends "Business Manager Role 
                 {
                     RunObject = xmlport "CREDIT Import EasyInvoice ID";
                     ApplicationArea = ALL;
+                }
+                action("Web Services")
+                {
+                    RunObject = page "Web Services";
+                    ApplicationArea = All;
+
                 }
 
             }

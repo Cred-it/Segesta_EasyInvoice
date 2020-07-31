@@ -36,7 +36,6 @@ page 70571575 "CREDIT EasyInvoice Setup"
 
     var
         webserviceCU: Codeunit "CREDIT Easy Invoice Webservice";
-
-
+ 
 }
 

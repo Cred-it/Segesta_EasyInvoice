@@ -23,6 +23,56 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table CREDIT Easy Invoice Connection - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 1230023800 - Field 1878130204 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Type</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table CREDIT Easy Invoice Connection - Field Type - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1230023800 - Field 1878130204 - Property 62802879" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Purchase Invoice,Purchase Credit Memo,Posted Purchase Invoice,Posted Purchase Credit Memo,Vendor Ledger Entry</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table CREDIT Easy Invoice Connection - Field Type - Property OptionCaption</note>
+        </trans-unit>
+        <trans-unit id="Table 1230023800 - Field 486908828 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Document No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table CREDIT Easy Invoice Connection - Field Document No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1230023800 - Field 235792422 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>EasyInvoiceID</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table CREDIT Easy Invoice Connection - Field EasyInvoiceID - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1230023800 - Field 4025419489 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Datestamp</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table CREDIT Easy Invoice Connection - Field Datestamp - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2337729737 - Method 132847697 - NamedType 2476940767" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Receipt No %1</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit CREDIT Easy Invoice Webservice - Method InsertPurchExtText - NamedType Text000</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2337729737 - Method 132847697 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Return Shipment No. %1:</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit CREDIT Easy Invoice Webservice - Method InsertPurchExtText - NamedType Text001</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2337729737 - Method 1172380296 - NamedType 2476940767" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Return Shipment No. %1:</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit CREDIT Easy Invoice Webservice - Method InsertInvLineFromRetShptLine - NamedType Text000</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2337729737 - Method 1172380296 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The program cannot find this purchase line.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit CREDIT Easy Invoice Webservice - Method InsertInvLineFromRetShptLine - NamedType Text001</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2337729737 - Method 1172380296 - NamedType 3752334001" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Exp. rec. date:</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit CREDIT Easy Invoice Webservice - Method InsertInvLineFromRetShptLine - NamedType Text002</note>
+        </trans-unit>
         <trans-unit id="Page 1287818463 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>EasyInvoice Setup</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -54,7 +104,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">Page CREDIT EasyInv Connection List - Control gTypeSelect - Property OptionCaption</note>
         </trans-unit>
         <trans-unit id="Page 580295018 - Control 1606682606 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Lijst</source>
+          <source>List</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page CREDIT EasyInv Connection List - Control List - Property Caption</note>
         </trans-unit>
@@ -88,6 +138,41 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">XmlPort CREDIT EasyInvoice Import - Property Caption</note>
         </trans-unit>
+        <trans-unit id="XmlPort 632056521 - NamedType 2476940767" size-unit="char" translate="yes" xml:space="preserve">
+          <source>An error has occurred while reading the picture on XmlPort %1</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">XmlPort CREDIT EasyInvoice Import - NamedType Text000</note>
+        </trans-unit>
+        <trans-unit id="XmlPort 632056521 - Method 2198518112 - NamedType 1639409158" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Purchase Invoice/Credit %1 exists for EasyInvoice ID %2</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">XmlPort CREDIT EasyInvoice Import - Method CheckExistsEasyInvoiceID - NamedType PurchHdrExistsTxt</note>
+        </trans-unit>
+        <trans-unit id="XmlPort 632056521 - Method 2198518112 - NamedType 2047390421" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Posted Purchase Invoice %1 exists for EasyInvoice ID %2</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">XmlPort CREDIT EasyInvoice Import - Method CheckExistsEasyInvoiceID - NamedType PurchInvHdrExistsTxt</note>
+        </trans-unit>
+        <trans-unit id="XmlPort 632056521 - Method 2198518112 - NamedType 3165461163" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Posted Purchase Credit Memo %1 exists for EasyInvoice ID %2</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">XmlPort CREDIT EasyInvoice Import - Method CheckExistsEasyInvoiceID - NamedType PurchCrMemoHdrExistsTxt</note>
+        </trans-unit>
+        <trans-unit id="XmlPort 632056521 - Method 667433446 - NamedType 1639409158" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Purchase Invoice/Credit %1 exists for Vendor Invoice %2</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">XmlPort CREDIT EasyInvoice Import - Method CheckExistsVendorInvoiceNo - NamedType PurchHdrExistsTxt</note>
+        </trans-unit>
+        <trans-unit id="XmlPort 632056521 - Method 667433446 - NamedType 2047390421" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Posted Purchase Invoice %1 exists for VendorInvoice No %2</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">XmlPort CREDIT EasyInvoice Import - Method CheckExistsVendorInvoiceNo - NamedType PurchInvHdrExistsTxt</note>
+        </trans-unit>
+        <trans-unit id="XmlPort 632056521 - Method 667433446 - NamedType 3165461163" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Posted Purchase Credit Memo %1 exists for Vendor Cr. memo No %2</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">XmlPort CREDIT EasyInvoice Import - Method CheckExistsVendorInvoiceNo - NamedType PurchCrMemoHdrExistsTxt</note>
+        </trans-unit>
         <trans-unit id="XmlPort 2129392085 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>CREDIT EasyInvoice Import Resp</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -98,25 +183,30 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">XmlPort CREDIT Import EasyInvoice ID - Property Caption</note>
         </trans-unit>
-        <trans-unit id="PageExtension 2199475619 - Action 2083976528 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2458191494">
+        <trans-unit id="PageExtension 2199475619 - Action 2083976528 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2704021542">
           <source>Easy Invoice Menu</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension CREDIT EasyInvoice Menu - Action Easy Invoice Menu - Property Caption</note>
         </trans-unit>
-        <trans-unit id="PageExtension 2199475619 - Action 1425177724 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2458191494">
+        <trans-unit id="PageExtension 2199475619 - Action 1425177724 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2704021542">
           <source>Easy Invoice Setup</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension CREDIT EasyInvoice Menu - Action Easy Invoice Setup - Property Caption</note>
         </trans-unit>
-        <trans-unit id="PageExtension 2199475619 - Action 2272547099 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2458191494">
+        <trans-unit id="PageExtension 2199475619 - Action 2272547099 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2704021542">
           <source>Easy Invoice Connection</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension CREDIT EasyInvoice Menu - Action Easy Invoice Connection - Property Caption</note>
         </trans-unit>
-        <trans-unit id="PageExtension 2199475619 - Action 1390557909 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2458191494">
+        <trans-unit id="PageExtension 2199475619 - Action 1390557909 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2704021542">
           <source>Import EasyInvoice ID's</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension CREDIT EasyInvoice Menu - Action Import EasyInvoice ID's - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2199475619 - Action 2050619786 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2704021542">
+          <source>Web Services</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension CREDIT EasyInvoice Menu - Action Web Services - Property Caption</note>
         </trans-unit>
       </group>
     </body>
