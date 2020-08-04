@@ -49,6 +49,11 @@ page 70571576 "CREDIT EasyInv Connection List"
                     ApplicationArea = All;
 
                 }
+                field(OnHold;OnHold)
+                {
+                    Editable = false;
+                    ApplicationArea = All;
+                }
                 field(Datestamp; Datestamp)
                 {
                     ApplicationArea = All;

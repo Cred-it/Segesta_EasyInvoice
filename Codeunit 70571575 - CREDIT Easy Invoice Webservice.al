@@ -122,7 +122,7 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
                 BEGIN
 
                     IF NOT lEasyInvConnect.GET(lEasyInvConnect.Type::"Purchase Invoice", PurchHeader."No.") then
-                        EXIT;
+                      EXIT;
 
                     IF PurchInvHeader.GET(PurchInvHeaderNo) THEN BEGIN
 
@@ -130,12 +130,14 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
                         nEasyInvConnect := lEasyInvConnect;
                         nEasyInvConnect.type := nEasyInvConnect.type::"Posted Purchase Invoice";
                         nEasyInvConnect."Document No." := PurchInvHeaderNo;
+                        nEasyInvConnect.OnHold :=  (PurchInvHeader."On Hold" <> '');
                         IF nEasyInvConnect.Insert(TRUE) THEN
                             lEasyInvConnect.Delete();
 
                         IF VendorLedgerEntry.GET(PurchInvHeader."Vendor Ledger Entry No.") THEN BEGIN
                             nEasyInvConnect.Type := nEasyInvConnect.Type::"Vendor Ledger Entry";
                             nEasyInvConnect."Document No." := FORMAT(VendorLedgerEntry."Entry No.");
+                            nEasyInvConnect.OnHold := (VendorLedgerEntry."On Hold" <> '');
                             IF nEasyInvConnect.Insert(TRUE) THEN;
                         END;
                     END;
@@ -143,18 +145,24 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
                 END;
             PurchHeader."Document Type"::"Credit Memo":
                 BEGIN
+                    
+                    IF NOT lEasyInvConnect.GET(lEasyInvConnect.Type::"Purchase Credit Memo", PurchHeader."No.") then 
+                      EXIT;
+                    
                     IF PurchCrMemoHeader.GET(PurchCrMemoHeaderNo) THEN BEGIN
-
+                        
                         //Insert New Easy Connect
                         nEasyInvConnect := lEasyInvConnect;
                         nEasyInvConnect.type := nEasyInvConnect.type::"Posted Purchase Credit Memo";
                         nEasyInvConnect."Document No." := PurchCrMemoHeaderNo;
+                        nEasyInvConnect.OnHold := (PurchCrMemoHeader."On Hold" <> '');
                         IF nEasyInvConnect.Insert(TRUE) THEN
                             lEasyInvConnect.Delete();
 
                         IF VendorLedgerEntry.GET(PurchCrMemoHeader."Vendor Ledger Entry No.") THEN BEGIN
                             nEasyInvConnect.Type := nEasyInvConnect.Type::"Vendor Ledger Entry";
                             nEasyInvConnect."Document No." := FORMAT(VendorLedgerEntry."Entry No.");
+                            nEasyInvConnect.OnHold := (VendorLedgerEntry."On Hold" <> '');
                             IF nEasyInvConnect.Insert(TRUE) THEN;
                         END;
                     END;
@@ -350,7 +358,8 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
 
         lEasyInvConnect."Document No." := PurchHdr."No.";
         lEasyInvConnect.EasyInvoiceID := ParEasyInvoiceNo;
-        IF lEasyInvConnect.INSERT THEN;
+        lEasyInvConnect.OnHold := (parPurchHdr."On Hold" <> '');
+        IF lEasyInvConnect.INSERT(TRUE) THEN;
 
     end;
 

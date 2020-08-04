@@ -46,8 +46,12 @@ xmlport 70571577
                     trigger OnAfterAssignVariable()
                     var
                     begin
-                        IF NOT EVALUATE(gEasyInvoiceID, EasyInvID) then
-                            gEasyInvoiceID := 0;
+                        IF NOT EVALUATE(gEasyInvoiceID, EasyInvID) then begin
+                            gTxtResult := 'Error';
+                            gTxtFault := 'Geen geldige integer EasyInvID ' + Format(EasyInvID);
+                            gTxtStatus := 'Onbekend';
+                            gFault := TRUE;
+                        end;
 
                     end;
                 }
@@ -148,6 +152,12 @@ xmlport 70571577
                     EasyInvoiceID: Integer;
                 begin
 
+                    //Voorafgaande fout
+                    IF gFault THEN begin
+                        currXMLport.BREAK;
+                        EXIT;
+                    end;
+
                     //Verwerk de factuur
                     IF fOptStatus = '0' THEN BEGIN
 
@@ -187,8 +197,15 @@ xmlport 70571577
 
                     //Blokkade weghalen
                     IF fOptStatus = '1' THEN BEGIN
+                        //tijdelijke controle
+                        If gEasyInvoiceID = 0 THEN begin
+                            gTxtResult := 'EasyInvoice is 0 kom ik hier' + FORMAT(gEasyInvoiceID);
+                            gFault := TRUE;
+                            currXMLport.SKIP;
+                            EXIT;
+                        end;
 
-                        //gTxtResult := CheckOnHold(TmpPurchaseHeader.EasyInvoiceID);
+                        gTxtResult := CheckOnHold(gEasyInvoiceID);
                         gFault := TRUE;
                         currXMLport.SKIP;
                         EXIT;
@@ -468,7 +485,7 @@ xmlport 70571577
 
                     lEasyInvoiceConnect.SetCurrentKey(EasyInvoiceID);
                     lEasyInvoiceConnect.SetRange(EasyInvoiceID, gEasyInvoiceID);
-                    lEasyInvoiceConnect.SetRange(Type, lEasyInvoiceConnect.type::"Posted Purchase Invoice");
+                    lEasyInvoiceConnect.SetRange(Type, lEasyInvoiceConnect.type::"Posted Purchase Credit Memo");
                     IF lEasyInvoiceConnect.FINDLAST THEN BEGIN
                         gCodNavInvoiceNo := lEasyInvoiceConnect."Document No.";
                         gTxtFault := '';
@@ -769,95 +786,111 @@ xmlport 70571577
 
         EasyInvoiceConnect.SetCurrentKey(EasyInvoiceID);
         EasyInvoiceConnect.SetRange(EasyInvoiceID, vEasyInvoiceId);
-
+        EasyInvoiceConnect.SetFilter(Type,'<>%1',EasyInvoiceConnect.Type::"Vendor Ledger Entry");
         IF NOT EasyInvoiceConnect.FINDLAST THEN
             EXIT;
 
 
+
         //Ongeboekte Documenten On Hold
-        IF (TmpPurchaseHeader."On Hold" = '') AND (fOptStatus = '1') THEN BEGIN
+        //IF (TmpPurchaseHeader."On Hold" = '') AND (fOptStatus = '1') THEN BEGIN
+        //IF fOptStatus = '1' THEN BEGIN
 
 
-            //Purchase Invoice
-            IF (EasyInvoiceConnect.Type = EasyInvoiceConnect.Type::"Purchase Invoice") AND
-                PurchHeader.GET(PurchHeader."Document Type"::Invoice, EasyInvoiceConnect."Document No.") THEN BEGIN
-                PurchHdr."On Hold" := '';
-                PurchHdr.MODIFY;
-                gCodNavInvoiceNo := PurchHdr."No.";
-                gTxtStatus := 'Ingelezen';
-                EXIT('On Hold verwijderd');
-
-            END;
-
-            //Purchase Credit
-            IF (EasyInvoiceConnect.Type = EasyInvoiceConnect.Type::"Purchase Credit Memo") AND
-                PurchHeader.GET(PurchHeader."Document Type"::"Credit Memo", EasyInvoiceConnect."Document No.") THEN BEGIN
-                PurchHdr."On Hold" := '';
-                PurchHdr.MODIFY;
-                gCodNavInvoiceNo := PurchHdr."No.";
-                gTxtStatus := 'Ingelezen';
-                EXIT('On Hold verwijderd');
-
-            END;
-            //ELSE BEGIN
-            //  EXIT('Ongeboekte factuur niet gevonden : '+fCodNavInvoiceNo);
+        //Purchase Invoice
+        IF (EasyInvoiceConnect.Type = EasyInvoiceConnect.Type::"Purchase Invoice") AND
+            PurchHeader.GET(PurchHeader."Document Type"::Invoice, EasyInvoiceConnect."Document No.") THEN BEGIN
+            PurchHeader."On Hold" := '';
+            PurchHeader.MODIFY;
+            gCodNavInvoiceNo := PurchHdr."No.";
+            gTxtStatus := 'Ingelezen';
+            EasyInvoiceConnect.OnHold := FALSE;
+            EasyInvoiceConnect.Datestamp := CurrentDateTime;
+            EasyInvoiceConnect.MODIFY;
+            EXIT('On Hold verwijderd');
 
         END;
+
+        //Purchase Credit
+        IF (EasyInvoiceConnect.Type = EasyInvoiceConnect.Type::"Purchase Credit Memo") AND
+            PurchHeader.GET(PurchHeader."Document Type"::"Credit Memo", EasyInvoiceConnect."Document No.") THEN BEGIN
+            PurchHeader."On Hold" := '';
+            PurchHeader.MODIFY;
+            gCodNavInvoiceNo := PurchHdr."No.";
+            gTxtStatus := 'Ingelezen';
+            EasyInvoiceConnect.OnHold := FALSE;
+            EasyInvoiceConnect.Datestamp := CurrentDateTime;
+            EasyInvoiceConnect.MODIFY;
+
+            EXIT('On Hold verwijderd');
+
+        END;
+        //ELSE BEGIN
+        //  EXIT('Ongeboekte factuur niet gevonden : '+fCodNavInvoiceNo);
+
+        //END;
 
         //Geboekte Documenten On Hold
-        IF (TmpPurchaseHeader."On Hold" = '') THEN BEGIN
+        //IF (TmpPurchaseHeader."On Hold" = '') THEN BEGIN
 
-            //Debet
-            IF TmpPurchaseHeader."Document Type" = TmpPurchaseHeader."Document Type"::Invoice THEN BEGIN
+        //Debet
+        IF TmpPurchaseHeader."Document Type" = TmpPurchaseHeader."Document Type"::Invoice THEN BEGIN
 
-                IF NOT ((EasyInvoiceConnect.Type = EasyInvoiceConnect.Type::"Posted Purchase Invoice") AND
-                         PurchInvHeader.GET(EasyInvoiceConnect."Document No.")) THEN BEGIN
+            IF NOT ((EasyInvoiceConnect.Type = EasyInvoiceConnect.Type::"Posted Purchase Invoice") AND 
+                    PurchInvHeader.GET(EasyInvoiceConnect."Document No.")) THEN BEGIN
 
-                    gTxtStatus := 'Onbekend';
-                    gTxtFault := STRSUBSTNO('Geboekte factuur niet gevonden voor EasyInvoiceID %1', gEasyInvoiceID);
+                gTxtStatus := 'Onbekend';
+                gTxtFault := STRSUBSTNO('Geboekte factuur niet gevonden voor EasyInvoiceID %1', gEasyInvoiceID);
+                EXIT('Error');
 
-                    EXIT('Error');
+            END ELSE BEGIN
+                PurchInvHeader."On Hold" := '';
+                PurchInvHeader.MODIFY;
 
-                END ELSE BEGIN
-                    PurchInvHeader."On Hold" := '';
-                    PurchInvHeader.MODIFY;
+                //Vendor Ledger Entries
+                VendLE.RESET;
+                VendLE.SETRANGE("Document Type", VendLE."Document Type"::Invoice);
+                VendLE.SETRANGE("Document No.", PurchInvHeader."No.");
+                VendLE.MODIFYALL("On Hold", '');
+                gCodNavInvoiceNo := PurchInvHeader."No.";
+                gTxtStatus := 'Geboekt';
+                EasyInvoiceConnect.OnHold := FALSE;
+                EasyInvoiceConnect.Datestamp := CurrentDateTime;
+                EasyInvoiceConnect.MODIFY;
 
-                    //Vendor Ledger Entries
-                    VendLE.RESET;
-                    VendLE.SETRANGE("Document Type", VendLE."Document Type"::Invoice);
-                    VendLE.SETRANGE("Document No.", PurchInvHeader."No.");
-                    VendLE.MODIFYALL("On Hold", '');
-                    gCodNavInvoiceNo := PurchInvHeader."No.";
-                    gTxtStatus := 'Geboekt';
-                    EXIT('On Hold verwijderd');
-                END;
-            END;
-
-            //Credit
-            IF TmpPurchaseHeader."Document Type" = TmpPurchaseHeader."Document Type"::"Credit Memo" THEN BEGIN
-
-                IF NOT ((EasyInvoiceConnect.Type = EasyInvoiceConnect.Type::"Posted Purchase Credit Memo") AND
-                        PurchCrMemoHeader.GET(EasyInvoiceConnect."Document No.")) THEN BEGIN
-
-                    gTxtStatus := 'Onbekend';
-                    gTxtFault := STRSUBSTNO('Geboekte Creditfactuur niet gevonden voor EasyInvoiceID %1', gEasyInvoiceID);
-                    EXIT('Error');
-
-                END ELSE BEGIN
-                    PurchCrMemoHeader."On Hold" := '';
-                    PurchCrMemoHeader.MODIFY;
-
-                    //Vendor Ledger Entries
-                    VendLE.RESET;
-                    VendLE.SETRANGE("Document Type", VendLE."Document Type"::"Credit Memo");
-                    VendLE.SETRANGE("Document No.", PurchCrMemoHeader."No.");
-                    VendLE.MODIFYALL("On Hold", '');
-                    gCodNavInvoiceNo := PurchCrMemoHeader."No.";
-                    gTxtStatus := 'Geboekt';
-                    EXIT('On Hold verwijderd');
-                END;
+                EXIT('On Hold verwijderd');
             END;
         END;
+
+        //Credit
+        IF TmpPurchaseHeader."Document Type" = TmpPurchaseHeader."Document Type"::"Credit Memo" THEN BEGIN
+
+            IF NOT ((EasyInvoiceConnect.Type = EasyInvoiceConnect.Type::"Posted Purchase Credit Memo") AND
+                    PurchCrMemoHeader.GET(EasyInvoiceConnect."Document No.")) THEN BEGIN
+
+                gTxtStatus := 'Onbekend';
+                gTxtFault := STRSUBSTNO('Geboekte Creditfactuur niet gevonden voor EasyInvoiceID %1', gEasyInvoiceID);
+                EXIT('Error');
+
+            END ELSE BEGIN
+                PurchCrMemoHeader."On Hold" := '';
+                PurchCrMemoHeader.MODIFY;
+
+                //Vendor Ledger Entries
+                VendLE.RESET;
+                VendLE.SETRANGE("Document Type", VendLE."Document Type"::"Credit Memo");
+                VendLE.SETRANGE("Document No.", PurchCrMemoHeader."No.");
+                VendLE.MODIFYALL("On Hold", '');
+                gCodNavInvoiceNo := PurchCrMemoHeader."No.";
+                gTxtStatus := 'Geboekt';
+                EasyInvoiceConnect.OnHold := FALSE;
+                EasyInvoiceConnect.Datestamp := CurrentDateTime;
+                EasyInvoiceConnect.MODIFY;
+
+                EXIT('On Hold verwijderd');
+            END;
+        END;
+        //END;
 
         //Niets gevonden in ongeboekt
         IF (TmpPurchaseHeader."On Hold" = '') AND (fOptStatus = '1') THEN BEGIN

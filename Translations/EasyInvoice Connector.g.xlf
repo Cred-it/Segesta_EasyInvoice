@@ -28,11 +28,6 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table CREDIT Easy Invoice Connection - Field Type - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Table 1230023800 - Field 1878130204 - Property 62802879" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Purchase Invoice,Purchase Credit Memo,Posted Purchase Invoice,Posted Purchase Credit Memo,Vendor Ledger Entry</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Table CREDIT Easy Invoice Connection - Field Type - Property OptionCaption</note>
-        </trans-unit>
         <trans-unit id="Table 1230023800 - Field 486908828 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Document No.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -47,6 +42,11 @@
           <source>Datestamp</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table CREDIT Easy Invoice Connection - Field Datestamp - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1230023800 - Field 2816448978 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>OnHold</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table CREDIT Easy Invoice Connection - Field OnHold - Property Caption</note>
         </trans-unit>
         <trans-unit id="Codeunit 2337729737 - Method 132847697 - NamedType 2476940767" size-unit="char" translate="yes" xml:space="preserve">
           <source>Receipt No %1</source>

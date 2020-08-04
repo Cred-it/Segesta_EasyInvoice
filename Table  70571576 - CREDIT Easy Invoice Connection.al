@@ -5,13 +5,13 @@ table 70571576 "CREDIT Easy Invoice Connection"
 
     fields
     {
-        field(1; Type; Option)
+        field(1; Type; Enum "CREDIT Easy Invoice Connection Type")
         {
             //CaptionML = ENU = 'Document Type',
             //            NLD = 'Document Soort';
             //OptionCaptionML = ENU = 'Purchase Invoice,Purchase Credit Memo,Posted Purchase Invoice,Posted Purchase Credit Memo,Vendor Ledger Entry',
             //                  NLD = 'Inkoopfactuur,Inkoop Creditfactuur,Geboekte Inkoopfactuur,Geboekte Inkoop Creditfactuur,Leverancierspost';
-            OptionMembers = "Purchase Invoice","Purchase Credit Memo","Posted Purchase Invoice","Posted Purchase Credit Memo","Vendor Ledger Entry";
+            //OptionMembers = "Purchase Invoice","Purchase Credit Memo","Posted Purchase Invoice","Posted Purchase Credit Memo","Vendor Ledger Entry";
         }
         field(2; "Document No."; Code[20])
         {
@@ -36,6 +36,10 @@ table 70571576 "CREDIT Easy Invoice Connection"
         {
             //CaptionML = ENU = 'Datestamp',
             //            NLD = 'Datumstempel';
+        }
+        field(200; OnHold; Boolean)
+        {
+
         }
     }
 
@@ -81,7 +85,7 @@ table 70571576 "CREDIT Easy Invoice Connection"
                     PAGE.RUNMODAL(138, lPurchasePostInvoice);
             Type::"Posted Purchase Credit Memo":
                 IF lPurchasePostCredit.GET("Document No.") THEN
-                    PAGE.RUNMODAL(140, lPurchasePostInvoice);
+                    PAGE.RUNMODAL(140, lPurchasePostCredit);
             Type::"Vendor Ledger Entry":
                 IF lVendorLedgerEntry.GET("Document No.") then
                     PAGE.RunModal(29, lVendorLedgerEntry);

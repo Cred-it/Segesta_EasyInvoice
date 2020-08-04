@@ -53,6 +53,9 @@
           <target state="translated">Datestamp</target>
           <note from="Xliff Generator" annotates="general" priority="3">Table CREDIT Easy Invoice Connection - Field Datestamp - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 1230023800 - Field 2816448978 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>OnHold</source>
+        </trans-unit>
         <trans-unit id="Codeunit 2337729737 - Method 132847697 - NamedType 2476940767" size-unit="char" translate="yes" xml:space="preserve">
           <source>Receipt No %1</source>
           <target state="translated">Receipt No %1</target>
