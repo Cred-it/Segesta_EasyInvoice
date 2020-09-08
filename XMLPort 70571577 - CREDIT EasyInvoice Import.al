@@ -214,7 +214,7 @@ xmlport 70571577
 
                     //Welke Status heeft de factuur
                     IF fOptStatus = '2' THEN BEGIN
-                        //gTxtStatus := CheckStatus(TmpPurchaseHeader.EasyInvoiceID);
+                        gTxtStatus := CheckStatus(gEasyInvoiceID);
                         gTxtResult := 'Succes';  //28-01-2020
                         gFault := TRUE;
                         currXMLport.SKIP;
@@ -564,7 +564,7 @@ xmlport 70571577
         //EVALUATE(parDate,parTxt);
     end;
 
-    local procedure CheckStatus(var vEasyInvoiceID: Integer): Text;
+    procedure CheckStatus(var vEasyInvoiceID: Integer): Text;
     var
         VendLE: Record "Vendor Ledger Entry";
         PurchInvHeader: Record "Purch. Inv. Header";
@@ -579,23 +579,40 @@ xmlport 70571577
         lEasyInvConnect.SetRange(EasyInvoiceID, vEasyInvoiceID);
         lEasyInvConnect.SetRange(Type, lEasyInvConnect.Type::"Vendor Ledger Entry");
 
-        IF lEasyInvConnect.FindFirst() AND VendLE.GET(lEasyInvConnect."Document No.") THEN BEGIN
-            VendLE.CALCFIELDS("Original Amount", "Remaining Amount");
-            gTxtResult := 'Succes';
+        If lEasyInvConnect.FindFirst() THEN
+            IF VendLE.GET(lEasyInvConnect."Document No.") THEN BEGIN
+                VendLE.CALCFIELDS("Original Amount", "Remaining Amount");
+                gTxtResult := 'Succes';
 
-            IF (VendLE."Remaining Amount" > 0) AND (VendLE."Remaining Amount" > VendLE."Original Amount") THEN BEGIN
-                ;
-                EXIT('Gedeeltelijk betaald');
+                //debet
+                IF VendLE."Document Type" = VendLE."Document Type"::Invoice THEN BEGIN
+                    IF (VendLE."Remaining Amount" > 0) AND (VendLE."Remaining Amount" > VendLE."Original Amount") THEN BEGIN
+                        ;
+                        EXIT('Gedeeltelijk betaald');
+                    END;
+
+                    IF (VendLE."Remaining Amount" = 0) AND (VendLE."Remaining Amount" > VendLE."Original Amount") THEN BEGIN
+                        fDatPayment := FORMAT(VendLE."Closed at Date"); //07-02-2020
+                        EXIT('Betaald')
+                    END;
+                END;
+
+                //credit
+                IF VendLE."Document Type" = VendLE."Document Type"::"Credit Memo" THEN BEGIN
+                    IF (VendLE."Remaining Amount" < 0) AND (VendLE."Remaining Amount" < VendLE."Original Amount") THEN BEGIN
+                        ;
+                        EXIT('Gedeeltelijk betaald');
+                    END;
+
+                    IF (VendLE."Remaining Amount" = 0) AND (VendLE."Remaining Amount" < VendLE."Original Amount") THEN BEGIN
+                        fDatPayment := FORMAT(VendLE."Closed at Date"); //07-02-2020
+                        EXIT('Betaald')
+                    END;
+                END;
+
+                //EXIT;
+
             END;
-
-            IF (VendLE."Remaining Amount" = 0) AND (VendLE."Remaining Amount" > VendLE."Original Amount") THEN BEGIN
-                fDatPayment := FORMAT(VendLE."Closed at Date"); //07-02-2020
-                EXIT('Betaald')
-            END;
-
-            //EXIT;
-
-        END;
 
         //Geboekt debet
         lEasyInvConnect.SetRange(Type, lEasyInvConnect.Type::"Posted Purchase Invoice");
@@ -786,7 +803,7 @@ xmlport 70571577
 
         EasyInvoiceConnect.SetCurrentKey(EasyInvoiceID);
         EasyInvoiceConnect.SetRange(EasyInvoiceID, vEasyInvoiceId);
-        EasyInvoiceConnect.SetFilter(Type,'<>%1',EasyInvoiceConnect.Type::"Vendor Ledger Entry");
+        EasyInvoiceConnect.SetFilter(Type, '<>%1', EasyInvoiceConnect.Type::"Vendor Ledger Entry");
         IF NOT EasyInvoiceConnect.FINDLAST THEN
             EXIT;
 
@@ -836,7 +853,7 @@ xmlport 70571577
         //Debet
         IF TmpPurchaseHeader."Document Type" = TmpPurchaseHeader."Document Type"::Invoice THEN BEGIN
 
-            IF NOT ((EasyInvoiceConnect.Type = EasyInvoiceConnect.Type::"Posted Purchase Invoice") AND 
+            IF NOT ((EasyInvoiceConnect.Type = EasyInvoiceConnect.Type::"Posted Purchase Invoice") AND
                     PurchInvHeader.GET(EasyInvoiceConnect."Document No.")) THEN BEGIN
 
                 gTxtStatus := 'Onbekend';

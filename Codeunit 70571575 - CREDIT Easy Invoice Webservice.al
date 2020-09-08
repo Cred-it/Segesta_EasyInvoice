@@ -122,7 +122,7 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
                 BEGIN
 
                     IF NOT lEasyInvConnect.GET(lEasyInvConnect.Type::"Purchase Invoice", PurchHeader."No.") then
-                      EXIT;
+                        EXIT;
 
                     IF PurchInvHeader.GET(PurchInvHeaderNo) THEN BEGIN
 
@@ -130,7 +130,7 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
                         nEasyInvConnect := lEasyInvConnect;
                         nEasyInvConnect.type := nEasyInvConnect.type::"Posted Purchase Invoice";
                         nEasyInvConnect."Document No." := PurchInvHeaderNo;
-                        nEasyInvConnect.OnHold :=  (PurchInvHeader."On Hold" <> '');
+                        nEasyInvConnect.OnHold := (PurchInvHeader."On Hold" <> '');
                         IF nEasyInvConnect.Insert(TRUE) THEN
                             lEasyInvConnect.Delete();
 
@@ -145,12 +145,12 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
                 END;
             PurchHeader."Document Type"::"Credit Memo":
                 BEGIN
-                    
-                    IF NOT lEasyInvConnect.GET(lEasyInvConnect.Type::"Purchase Credit Memo", PurchHeader."No.") then 
-                      EXIT;
-                    
+
+                    IF NOT lEasyInvConnect.GET(lEasyInvConnect.Type::"Purchase Credit Memo", PurchHeader."No.") then
+                        EXIT;
+
                     IF PurchCrMemoHeader.GET(PurchCrMemoHeaderNo) THEN BEGIN
-                        
+
                         //Insert New Easy Connect
                         nEasyInvConnect := lEasyInvConnect;
                         nEasyInvConnect.type := nEasyInvConnect.type::"Posted Purchase Credit Memo";
@@ -174,14 +174,111 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
         END;
     end;
 
-    procedure ExportStatus(EasyInvoiceID: Integer);
+
+    procedure ExportStatus(var vEasyInvoiceID: Integer; var gCodNavInvoiceNo: code[20]; var gtxtResult: text; var gStatus: text; var gTxtFault: text; var gdatpayment: text);
     var
-        TableFilterOut: Text[250];
-        FieldFilterOut: Text[250];
-        KeyOut: Text[250];
+        VendLE: Record "Vendor Ledger Entry";
+        PurchInvHeader: Record "Purch. Inv. Header";
+        PurchCrMemoHeader: Record "Purch. Cr. Memo Hdr.";
+        PurchHeader: Record "Purchase Header";
+        lEasyInvConnect: Record "CREDIT Easy Invoice Connection";
     begin
 
-        CLEARLASTERROR;
+        //Betaald / Gedeeltelijk betaald
+
+        lEasyInvConnect.SetCurrentKey(EasyInvoiceID);
+        lEasyInvConnect.SetRange(EasyInvoiceID, vEasyInvoiceID);
+        lEasyInvConnect.SetRange(Type, lEasyInvConnect.Type::"Vendor Ledger Entry");
+
+        IF lEasyInvConnect.FindFirst() THEN
+            IF VendLE.GET(lEasyInvConnect."Document No.") THEN BEGIN
+            VendLE.CALCFIELDS("Original Amount", "Remaining Amount");
+            gTxtResult := 'Succes';
+
+            //debet
+            IF VendLE."Document Type" = VendLE."Document Type"::Invoice THEN BEGIN
+                IF (VendLE."Remaining Amount" > 0) AND (VendLE."Remaining Amount" > VendLE."Original Amount") THEN BEGIN
+                    ;
+                    gstatus := ('Gedeeltelijk betaald');
+                    EXIT;
+                END;
+
+                IF (VendLE."Remaining Amount" = 0) AND (VendLE."Remaining Amount" > VendLE."Original Amount") THEN BEGIN
+                    gDatPayment := Date2txt(VendLE."Closed at Date"); //07-02-2020
+                    gstatus := ('Betaald');
+                    EXIT;
+                END;
+            END;
+
+            //credit
+            IF VendLE."Document Type" = VendLE."Document Type"::"Credit Memo" THEN BEGIN
+                IF (VendLE."Remaining Amount" < 0) AND (VendLE."Remaining Amount" < VendLE."Original Amount") THEN BEGIN
+                    ;
+                    gStatus := ('Gedeeltelijk betaald');
+                    EXIT;
+                END;
+
+                IF (VendLE."Remaining Amount" = 0) AND (VendLE."Remaining Amount" < VendLE."Original Amount") THEN BEGIN
+                    gDatPayment := Date2txt(VendLE."Closed at Date"); //07-02-2020
+                    gStatus := ('Betaald');
+                    EXIT;
+                END;
+            END;
+
+
+        END;
+
+        //Geboekt debet
+        lEasyInvConnect.SetRange(Type, lEasyInvConnect.Type::"Posted Purchase Invoice");
+        IF lEasyInvConnect.FINDFIRST AND (PurchInvHeader.GET(lEasyInvConnect."Document No.")) THEN BEGIN
+            gTxtResult := 'Succes';
+            gCodNavInvoiceNo := PurchInvHeader."No.";
+            gStatus := ('Geboekt'); //op factuur nr.: '+PurchInvHeader."No.");
+            EXIT;
+        END;
+
+        //Geboekt credit
+        lEasyInvConnect.SetRange(type, lEasyInvConnect.Type::"Posted Purchase Credit Memo");
+        IF lEasyInvConnect.FINDFIRST AND (PurchCrMemoHeader.GET(lEasyInvConnect."Document No.")) THEN BEGIN
+            gTxtResult := 'Succes';
+            gCodNavInvoiceNo := PurchCrMemoHeader."No.";
+            gStatus := ('Geboekt'); //op factuur nr.: '+PurchInvHeader."No.");
+            EXIT;
+        END;
+
+        //Ingelezen debet 
+        lEasyInvConnect.SetRange(Type, lEasyInvConnect.Type::"Purchase Invoice");
+        IF lEasyInvConnect.FINDFIRST AND
+           PurchHeader.GET(Purchheader."Document Type"::Invoice, lEasyInvConnect."Document No.") THEN BEGIN
+            gTxtResult := 'Succes';
+            gCodNavInvoiceNo := PurchHeader."No.";
+            gStatus := ('Ingelezen');
+            EXIT;
+        END;
+
+        //Ingelezen credit
+        lEasyInvConnect.SetRange(Type, lEasyInvConnect.Type::"Purchase Credit Memo");
+        IF lEasyInvConnect.FINDFIRST AND
+            PurchHeader.GET(Purchheader."Document Type"::"Credit Memo", lEasyInvConnect."Document No.") THEN BEGIN
+            gTxtResult := 'Succes';
+            gCodNavInvoiceNo := PurchHeader."No.";
+            gStatus := ('Ingelezen');
+            EXIT;
+        END;
+
+        gTxtResult := 'Error';
+        gTxtFault := STRSUBSTNO('Factuur met EasyInvoiceID %1 niet gevonden', gEasyInvoiceID);
+
+
+        gStatus := ('Onbekend');
+    end;
+
+    procedure Date2txt(input: Date): text;
+    var
+        dateformat: text;
+    begin
+        dateformat := '<Day,2>-<Month,2>-<Year4>';
+        EXIT(FORMAT(input, 0, dateformat));
     end;
 
     local procedure "*** Process Purchase ***"();
@@ -222,6 +319,7 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
     procedure EasyInvoiceHeader(var Rec: Record "Purchase Header");
     var
         ReleasePurch: Codeunit "Release Purchase Document";
+        LocDimSet: Integer;
     begin
         GeneralLedgerSetup.GET;
 
@@ -319,6 +417,14 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
 
             END;
             //'Insert mislukt'
+
+            //<<10-08-2020 Dimensions on Header
+            LocDimSet := ReadEasyInvoiceDimension(0, '', '');
+            IF LocDimSet <> 0 THEN BEGIN
+                "Dimension Set ID" := LocDimSet;
+                MODIFY;
+            END;
+            //>>
 
             ValidateChecks("No.");
 
@@ -668,6 +774,7 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
         LocRecItem: Record 27;
         LocDirectUnitCost: Decimal;
         LocDocDim: Record 348;
+        LocDimSet: Integer;
     begin
         LocPurchLine.RESET;
         LocPurchLine.SETFILTER("Document Type", '%1|%2', LocPurchLine."Document Type"::Invoice, LocPurchLine."Document Type"::"Credit Memo");
@@ -709,16 +816,16 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
         IF LocPurchLine.FINDSET THEN
             REPEAT
                 IF LocPurchLine."Line No." MOD 10000 = 0 THEN BEGIN
-                    //IF NOT OrderMatch THEN //06-03-2018
-                    LocPurchLine."Dimension Set ID" := ReadEasyInvoiceDimension(gArrarEasyInvoiceLineNo[LocPurchLine."Line No." / 100],
-                                                                        LocPurchLine."Shortcut Dimension 1 Code", LocPurchLine."Shortcut Dimension 2 Code");
 
-                    //<<06-03-2018
-                    //ELSE
-                    //  LocPurchLine."Dimension Set ID" := ReadEasyInvoiceDimension(PurchHdr.EasyInvoiceID,FORMAT(EasyLineNo[LocPurchLine."Line No."/100]),
-                    //                                                      LocPurchLine."Shortcut Dimension 1 Code",LocPurchLine."Shortcut Dimension 2 Code");
-                    //>>06-03-2018
-                    LocPurchLine.MODIFY;
+                    //<<10-08-2020
+                    LocDimSet := ReadEasyInvoiceDimension(gArrarEasyInvoiceLineNo[LocPurchLine."Line No." / 100],
+                                                                            LocPurchLine."Shortcut Dimension 1 Code", LocPurchLine."Shortcut Dimension 2 Code");
+                    IF LocDimSet <> 0 THEN BEGIN
+                        LocPurchLine."Dimension Set ID" := LocDimSet;
+                        LocPurchLine.MODIFY;
+                    END;
+                    //>>
+
                     CheckBTW(gArrarEasyInvoiceLineNo[LocPurchLine."Line No." / 100], LocPurchLine);
                 END;
             UNTIL LocPurchLine.NEXT = 0;
@@ -758,11 +865,15 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
 
 
         //*** Iets mee doen
-        IF gTmpPurchLine.GET(ParPurchLine."Document Type", 'EASY001', ParEasyInvoiceLineNo) THEN BEGIN
+        gTmpPurchLine.SETRANGE("Line No.", ParEasyInvoiceLineNo);
+        IF gTmpPurchLine.FindFirst() THEN BEGIN
+
             VATValue := gTmpPurchLine."VAT Base Amount";
             IF ABS(LocCountBTW) <> ABS(VATValue) THEN BEGIN
                 gBtwVerschil := TRUE;
             END;
+            //Error('Btw inbase : ' +  FORMAT(LocCountBTW) +' vs ' + Format(VATValue));
+
         END;
 
         //SQLReaderDim.Close;
@@ -772,6 +883,7 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
             IF TempVATAmountLineOrg.GET(ParPurchLine."VAT Identifier", ParPurchLine."VAT Calculation Type",
                                         ParPurchLine."Tax Group Code", ParPurchLine."Use Tax", ParPurchLine."Line Amount" >= 0) THEN BEGIN
 
+
                 IF TempVATAmountLineOrg."VAT %" <> 0 THEN BEGIN
                     TempVATAmountLineOrg.VALIDATE("VAT Difference", 0);
                     TempVATAmountLineOrg.CheckVATDifference(ParPurchLine."Currency Code", TRUE);
@@ -780,21 +892,15 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
 
                     TempVATAmountLineOrg."VAT Amount" := TempVATAmountLineOrg."VAT Amount" + VATValue;
                     TempVATAmountLineOrg."VAT Difference" := TempVATAmountLineOrg."VAT Amount" - TempVATAmountLineOrg."Calculated VAT Amount";
-
                     TempVATAmountLineOrg."Amount Including VAT" := TempVATAmountLineOrg."VAT Base" + TempVATAmountLineOrg."VAT Amount";
                     TempVATAmountLineOrg.MODIFY(TRUE);
+
                 END;
 
             END;
 
         END;
-        //SQLStatment := 'UPDATE '+PurchSetup."EasyInvoice Line"+' SET [fDecNavTax] = '+ConvDecToText(LocCountBTW+ParPurchLine.
-        //"VAT Difference")+
-        ///                                                 '    ,[fDecNavNet] = '+ConvDecToText(ParPurchLine."Line Amount")+
-        //                 ' WHERE [InvoiceNr]='+_Q_+FORMAT(ParEasyInvoiceNo)+_Q_+' AND [fIntLineNo]='+ParEasyInvoiceLineNo;
-        //SQLCommandUpdate := SQLConnection.CreateCommand();
-        //SQLCommandUpdate.CommandText(SQLStatment);
-        //SQLCommandUpdate.ExecuteNonQuery();
+
     end;
 
     [Scope('onPrem')]
@@ -1005,8 +1111,8 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
         TempPurchLine: Record 39 temporary;
         FrmVATSpec: Page 576;
     begin
-        //TempVATAmountLineOrg.MODIFYALL(Modified,TRUE);
-        //PurchLine.UpdateVATOnLines(1,PurchHdr,PurchLine,TempVATAmountLineOrg);
+        TempVATAmountLineOrg.MODIFYALL(Modified, TRUE);
+        PurchLine.UpdateVATOnLines(1, PurchHdr, PurchLine, TempVATAmountLineOrg);
     end;
 
     [Scope('onPrem')]
@@ -1198,14 +1304,14 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
 
     end;
 
-    procedure WebServiceGet() : Text
-    
-    var 
-        WebservicePage : page "Web Services";
-        
+    procedure WebServiceGet(): Text
+
+    var
+        WebservicePage: page "Web Services";
+
     begin
 
-    end;    
+    end;
 
     procedure getJsonTextField(O: JsonObject; Member: Text): text;
     var
