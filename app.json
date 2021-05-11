@@ -1,11 +1,11 @@
 {
   "id": "7a87c502-f03d-4097-afe6-75e44525e19c",
   "name": "EasyInvoice Connector",
-  "publisher": "Cred-IT (c) 2020",
+  "publisher": "Cred-IT (c) 2021",
 
   "brief": "",
   "description": "EasyInvoice Interface 2.0",
-  "version": "2020.07.15.001",
+  "version": "2021.02.10.001",
   "privacyStatement": "",
   "EULA": "",
   "help": "",
@@ -17,14 +17,15 @@
       "id": "63ca2fa4-4f03-4f2b-a480-172fef340d3f",
       "publisher": "Microsoft",
       "name": "System Application",
-      "version": "16.0.0.0"
+      "version": "17.0.0.0"
     },
     {
       "id": "437dbf0e-84ff-417a-965d-ed2bb9650972",
       "publisher": "Microsoft",
       "name": "Base Application",
-      "version": "16.0.0.0"
+      "version": "17.0.0.0"
     }
+    
   ],
   "screenshots": [],
   "platform": "16.0.0.0",
