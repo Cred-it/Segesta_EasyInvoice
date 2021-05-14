@@ -1,3 +1,6 @@
+/// <summary>
+/// XmlPort CREDIT EasyInv MasterData filt (ID 70571576).
+/// </summary>
 xmlport 70571576 "CREDIT EasyInv MasterData filt"
 {
     // version EasyInvoice 2020.06.27.01

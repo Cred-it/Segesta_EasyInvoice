@@ -1,3 +1,6 @@
+/// <summary>
+/// XmlPort CREDIT EasyInv MasterData (ID 70571575).
+/// </summary>
 xmlport 70571575 "CREDIT EasyInv MasterData"
 {
     // version EasyInvoice 2020.06.27.01
@@ -93,7 +96,7 @@ xmlport 70571575 "CREDIT EasyInv MasterData"
 
                         end;
 
-                        
+
                     }
 
                     trigger OnAfterGetRecord();

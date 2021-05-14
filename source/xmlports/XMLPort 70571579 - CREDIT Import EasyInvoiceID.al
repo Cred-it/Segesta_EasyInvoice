@@ -28,8 +28,8 @@ xmlport 70571579 "CREDIT Import EasyInvoice ID"
                 }
                 trigger OnAfterInsertRecord()
                 var
-                    VendLedEntry: record "Vendor Ledger Entry";
                     lEasyINvConnect: Record "CREDIT Easy Invoice Connection";
+                    VendLedEntry: record "Vendor Ledger Entry";
                 begin
 
                     IF ("Easy Invoice Connection".Type = "Easy Invoice Connection".Type::"Posted Purchase Credit Memo") OR

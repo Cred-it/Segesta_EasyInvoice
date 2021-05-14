@@ -9,6 +9,7 @@ xmlport 70571577
     // 13-01-2020 - 2020.01.13.01 Decimal calculation
     // 28-01-2020 - 2020.01.28.01 Decimal Determation, OnHold on Credits too,fTxtStatus
     // 07-02-2020 - 2020.02.07.01 Payment date
+    // 14-05-2021 - 2021.04.01.01 Bankaccount IBAN extend 
 
     Encoding = UTF16;
     FormatEvaluate = Xml;
