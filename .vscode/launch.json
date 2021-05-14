@@ -4,8 +4,8 @@
     {
       "type": "al",
       "request": "launch",
-      "name": "Microsoft cloud sandbox",
-      "server": "http://businesscentral.dynamics.com/b0cd7d6b-b7b4-4330-9976-d0246e6f1983/Sandbox:7049",
+      "name": "Microsoft cloud Sandbox Extension Tester",
+      "server": "https://businesscentral.dynamics.com/b0cd7d6b-b7b4-4330-9976-d0246e6f1983/Sandbox:7049",
       "startupObjectId": 70571575,
       "startupObjectType": "Page",
       "schemaUpdateMode": "ForceSync",
