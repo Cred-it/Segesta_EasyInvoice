@@ -1,3 +1,6 @@
+/// <summary>
+/// Codeunit CREDIT Easy Invoice Webservice (ID 70571575).
+/// </summary>
 codeunit 70571575 "CREDIT Easy Invoice Webservice"
 {
     // version EasyInvoice 2020.06.22.01

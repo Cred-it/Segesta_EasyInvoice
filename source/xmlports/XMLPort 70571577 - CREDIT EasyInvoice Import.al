@@ -1,5 +1,4 @@
-xmlport 70571577
- "CREDIT EasyInvoice Import"
+xmlport 70571577 "CREDIT EasyInvoice Import"
 {
     // version EasyInvoice 2020.02.07.01
 
@@ -178,22 +177,20 @@ xmlport 70571577
 
                         //15-04-2019
 
-                        WITH TmpPurchaseHeader DO BEGIN
-
-                            //Dates
-                            ConvertDate(fDatPostingDate, "Posting Date");
-                            ConvertDate(fDatDocumentDate, "Document Date");
-                            ConvertDate(fDatDueDate, "Due Date");
+                        //Dates
+                        ConvertDate(fDatPostingDate, TmpPurchaseHeader."Posting Date");
+                        ConvertDate(fDatDocumentDate, TmpPurchaseHeader."Document Date");
+                        ConvertDate(fDatDueDate, TmpPurchaseHeader."Due Date");
 
 
-                            //fictief Document Nr geven
-                            "No." := 'EASY001';
+                        //fictief Document Nr geven
+                        TmpPurchaseHeader."No." := 'EASY001';
 
-                            //CreateTmp
-                            gTMPHeader := TmpPurchaseHeader;
-                            IF gTMPHeader.INSERT THEN;
+                        //CreateTmp
+                        gTMPHeader := TmpPurchaseHeader;
+                        IF gTMPHeader.INSERT THEN;
 
-                        END;
+                        
                     END;
 
                     //Blokkade weghalen
@@ -548,6 +545,12 @@ xmlport 70571577
         gDatDocument: Date;
         gPostInvoice: Boolean;
 
+    /// <summary>
+    /// ConvertDate.
+    /// </summary>
+    /// <param name="parTxt">Text[1024].</param>
+    /// <param name="parDate">VAR Date.</param>
+    /// <returns>Return value of type Text[20].</returns>
     procedure ConvertDate(parTxt: Text[1024]; var parDate: Date): Text[20];
     var
         DD: Integer;
@@ -565,6 +568,11 @@ xmlport 70571577
         //EVALUATE(parDate,parTxt);
     end;
 
+    /// <summary>
+    /// CheckStatus.
+    /// </summary>
+    /// <param name="vEasyInvoiceID">VAR Integer.</param>
+    /// <returns>Return value of type Text.</returns>
     procedure CheckStatus(var vEasyInvoiceID: Integer): Text;
     var
         VendLE: Record "Vendor Ledger Entry";

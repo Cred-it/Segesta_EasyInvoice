@@ -293,32 +293,36 @@ xmlport 70571575 "CREDIT EasyInv MasterData"
     var
         Numberrec: Record Integer;
     begin
-        WITH Numberrec DO BEGIN
-            SETFILTER(Number, TableFilterIn);
-            IF FINDSET THEN
-                REPEAT
-                    Table := Numberrec;
-                    IF Table.INSERT THEN;
-                UNTIL NEXT = 0;
-        END;
+        Numberrec.SETFILTER(Number, TableFilterIn);
+        IF Numberrec.FINDSET THEN
+            REPEAT
+                Table := Numberrec;
+                IF Table.INSERT THEN;
+            UNTIL NumberRec.NEXT = 0;
+
     end;
 
     local procedure CreateFields(TableFilterIn: Integer; FieldFilterIn: Text);
     var
         FieldRec: Record "Field";
     begin
-        WITH FieldRec DO BEGIN
-            SETRANGE(TableNo, TableFilterIn);
-            IF FieldFilter <> '' THEN
-                SETFILTER("No.", FieldFilterIn);
-            IF FINDSET THEN
-                REPEAT
-                    FieldTmp := FieldRec;
-                    IF FieldTmp.INSERT THEN;
-                UNTIL NEXT = 0;
-        END;
+        FieldRec.SETRANGE(TableNo, TableFilterIn);
+        IF FieldFilter <> '' THEN
+            FieldRec.SETFILTER("No.", FieldFilterIn);
+        IF FieldRec.FINDSET THEN
+            REPEAT
+                FieldTmp := FieldRec;
+                IF FieldTmp.INSERT THEN;
+            UNTIL FieldRec.NEXT = 0;
     end;
 
+    /// <summary>
+    /// SetParameters.
+    /// </summary>
+    /// <param name="TableFilterIn">VAR Text.</param>
+    /// <param name="FieldFilterIn">VAR Text.</param>
+    /// <param name="KeyIn">VAR Text.</param>
+    /// <param name="RecordFilterIn">VAR Text.</param>
     procedure SetParameters(var TableFilterIn: Text; var FieldFilterIn: Text; var KeyIn: Text; var RecordFilterIn: Text);
     begin
         TableFilter := TableFilterIn;
