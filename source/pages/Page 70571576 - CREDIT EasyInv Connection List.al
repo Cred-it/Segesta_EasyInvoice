@@ -26,7 +26,7 @@ page 70571576 "CREDIT EasyInv Connection List"
                     ApplicationArea = All;
                     trigger OnValidate();
                     begin
-                        SETRANGE(Type, gTypeSelect);
+                        rec.SETRANGE(Type, gTypeSelect);
                         CurrPage.UPDATE;
                     end;
                 }
@@ -38,23 +38,23 @@ page 70571576 "CREDIT EasyInv Connection List"
             repeater(Group)
             {
 
-                field("Document No."; "Document No.")
+                field("Document No."; rec."Document No.")
                 {
                     ApplicationArea = All;
 
                 }
-                field(EasyInvoiceID; "EasyInvoiceID")
+                field(EasyInvoiceID; rec."EasyInvoiceID")
                 {
                     Editable = true;
                     ApplicationArea = All;
 
                 }
-                field(OnHold;OnHold)
+                field(OnHold; rec.OnHold)
                 {
                     Editable = false;
                     ApplicationArea = All;
                 }
-                field(Datestamp; Datestamp)
+                field(Datestamp; rec.Datestamp)
                 {
                     ApplicationArea = All;
                 }
@@ -83,7 +83,7 @@ page 70571576 "CREDIT EasyInv Connection List"
                     ToolTip = 'Opens corresponding Card';
                     trigger OnAction();
                     begin
-                        CardOpen;
+                        rec.CardOpen;
                     end;
                 }
             }
@@ -92,7 +92,7 @@ page 70571576 "CREDIT EasyInv Connection List"
 
     trigger OnOpenPage();
     begin
-        SETRANGE(Type, gTypeSelect);
+        rec.SETRANGE(Type, gTypeSelect);
     end;
 
     var

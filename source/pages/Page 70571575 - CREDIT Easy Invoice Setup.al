@@ -17,7 +17,7 @@ page 70571575 "CREDIT EasyInvoice Setup"
             group(General)
             {
                 Caption = 'General';
-                field("Hyperlink EasyInvoice"; "Hyperlink EasyInvoice")
+                field("Hyperlink EasyInvoice"; rec."Hyperlink EasyInvoice")
                 {
                     ApplicationArea = All;
                     Editable = true;
