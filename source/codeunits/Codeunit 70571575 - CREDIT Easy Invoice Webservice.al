@@ -369,6 +369,7 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
     /// </summary>
     /// <param name="input">Date.</param>
     /// <returns>Return value of type text.</returns>
+    [Scope('onPrem')]
     procedure Date2txt(input: Date): text;
     var
         dateformat: text;
@@ -636,6 +637,7 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
     /// <param name="gStatus">VAR text.</param>
     /// <param name="gTxtFault">VAR text.</param>
     /// <param name="gdatpayment">VAR text.</param>
+    [Scope('onPrem')]
     procedure ExportStatus(var vEasyInvoiceID: Integer; var gCodNavInvoiceNo: code[20]; var gtxtResult: text; var gStatus: text; var gTxtFault: text; var gdatpayment: text);
     var
         VendLE: Record "Vendor Ledger Entry";
@@ -756,6 +758,7 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
     /// </summary>
     /// <param name="EasyInvoiceID">Integer.</param>
     /// <returns>Return variable HyperTxt of type Text[250].</returns>
+    [Scope('onPrem')]
     procedure HyperText(EasyInvoiceID: Integer) HyperTxt: Text[250];
     var
         EasyInvoiceSetup: Record "CREDIT Easy Invoice setup";
@@ -1351,11 +1354,11 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
     end;
 
     /// <summary>
-    /// SetOrderMactch.
+    /// SetOrderMatch.
     /// </summary>
     /// <param name="ParOM">Boolean.</param>
     [Scope('onPrem')]
-    procedure SetOrderMactch(ParOM: Boolean);
+    procedure SetOrderMatch(ParOM: Boolean);
     begin
         OrderMatch := ParOM
     end;
@@ -1452,18 +1455,6 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
         SELECTLATESTVERSION;
     end;
 
-    /// <summary>
-    /// WebServiceGet.
-    /// </summary>
-    /// <returns>Return value of type Text.</returns>
-    procedure WebServiceGet(): Text
-
-    var
-        WebservicePage: page "Web Services";
-
-    begin
-
-    end;
 
     local procedure "*** Process Purchase ***"();
     begin

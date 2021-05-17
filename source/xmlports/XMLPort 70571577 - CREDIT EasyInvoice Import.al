@@ -345,7 +345,11 @@ xmlport 70571577 "CREDIT EasyInvoice Import"
                         gFault := TRUE;
                         gTxtFault := GETLASTERRORTEXT;
                     END;
-                end;
+                 //<<12-02-2021
+                 IF TmpPurchaseLine."Receipt No." <> '' THEN
+                   gBlnOrder := TRUE;
+                 //>>
+	        end;
             }
             tableelement(tmpdimensionline; "Dimension Value")
             {
@@ -424,6 +428,7 @@ xmlport 70571577 "CREDIT EasyInvoice Import"
         CLEAR(lCduEasyInvoice);
 
         //Variabelen doorgeven aan de codeunit
+        lCduEasyInvoice.SetOrderMatch(gBlnOrder);
         lCduEasyInvoice.CreateTmp(gTMPHeader, gTMPLine, gTMPDim, gEasyInvoiceID);
 
         //Verwerken van de codeunit;
@@ -544,6 +549,7 @@ xmlport 70571577 "CREDIT EasyInvoice Import"
         gCodNavInvoiceNo: Code[20];
         gDatDocument: Date;
         gPostInvoice: Boolean;
+        gBlnOrder: Boolean;
 
     /// <summary>
     /// ConvertDate.
