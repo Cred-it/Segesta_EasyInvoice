@@ -1,3 +1,6 @@
+/// <summary>
+/// PageExtension CREDIT EasyInvoice Menu (ID 70571580) extends Record Business Manager Role Center.
+/// </summary>
 pageextension 70571580 "CREDIT EasyInvoice Menu" extends "Business Manager Role Center"
 {
 

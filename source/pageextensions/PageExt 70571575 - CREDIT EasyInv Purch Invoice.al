@@ -26,7 +26,7 @@ pageextension 70571575 "CREDIT EasyInv Purch Invoice" extends "Purchase Invoice"
 
     trigger OnAfterGetRecord()
     begin
-        IF NOT EasyInvoiceCon.GET(EasyInvoiceCon.Type::"Purchase Invoice", "No.") then
+        IF NOT EasyInvoiceCon.GET(EasyInvoiceCon.Type::"Purchase Invoice", Rec."No.") then
             EasyInvoiceCon.INIT;
     end;
 

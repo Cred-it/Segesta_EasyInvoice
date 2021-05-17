@@ -328,128 +328,128 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
         GeneralLedgerSetup.GET;
 
         PurchHdr := Rec;
-        WITH PurchHdr DO BEGIN
-            INIT;
 
-            SetHideValidationDialog(TRUE);
+        PurchHdr.INIT;
 
-            //'Leveranciernummer'
-            VALIDATE("Buy-from Vendor No.", gTmpPurchHdr."Buy-from Vendor No.");
+        PurchHdr.SetHideValidationDialog(TRUE);
 
-            //EasyInvoiceID := gTmpPurchHdr.EasyInvoiceID;
+        //'Leveranciernummer'
+        PurchHdr.VALIDATE("Buy-from Vendor No.", gTmpPurchHdr."Buy-from Vendor No.");
 
-            //'Betalen aan Leveranciernummer'
-            IF gTmpPurchHdr."Pay-to Vendor No." <> '' THEN
-                VALIDATE("Pay-To Vendor No.", gTmpPurchHdr."Pay-To Vendor No.");
+        //EasyInvoiceID := gTmpPurchHdr.EasyInvoiceID;
 
-            //'Notatype'
-            VALIDATE("Document Type", gTmpPurchHdr."Document Type");
+        //'Betalen aan Leveranciernummer'
+        IF gTmpPurchHdr."Pay-to Vendor No." <> '' THEN
+            PurchHdr.VALIDATE("Pay-To Vendor No.", gTmpPurchHdr."Pay-To Vendor No.");
 
-            //'Boekingsdatum'
-            "Posting Date" := gTmpPurchHdr."Posting Date";
+        //'Notatype'
+        PurchHdr.VALIDATE("Document Type", gTmpPurchHdr."Document Type");
 
-            //'Factuurnummer'
-            "Vendor Invoice No." := gTmpPurchHdr."Vendor Invoice No.";
+        //'Boekingsdatum'
+        PurchHdr."Posting Date" := gTmpPurchHdr."Posting Date";
 
-            //'Boekingsdatum'
-            IF gTmpPurchHdr."Posting Date" <> 0D THEN
-                VALIDATE("Posting Date", gTmpPurchHdr."Posting Date");
+        //'Factuurnummer'
+        PurchHdr."Vendor Invoice No." := gTmpPurchHdr."Vendor Invoice No.";
 
-            IF gTmpPurchHdr."Bank Account Code" <> '' THEN BEGIN
-                //'Bankrekening'
-                EVALUATE("Bank Account Code", CheckBank("Buy-from Vendor No.", gTmpPurchHdr."Prepmt. Posting Description"));
-            END;
+        //'Boekingsdatum'
+        IF gTmpPurchHdr."Posting Date" <> 0D THEN
+            PurchHdr.VALIDATE("Posting Date", gTmpPurchHdr."Posting Date");
 
-            //'Bedrag'
-            Amount := gTmpPurchHdr.Amount;
-
-            //'Bedrag incl. BTW'
-            "Amount Including VAT" := gTmpPurchHdr."Amount Including VAT";
-
-            //** Totaalcontrole factuur **
-            "Doc. Amount Incl. VAT" := gTmpPurchHdr."Doc. Amount Incl. VAT";
-            "Doc. Amount VAT" := gTmpPurchHdr."Doc. Amount VAT";
-            //** Totaalcontrole factuur **
-
-
-            //'Credit Memo'
-            IF "Document Type" = "Document Type"::"Credit Memo" THEN BEGIN
-                PurchHdr."Vendor Cr. Memo No." := gTmpPurchHdr."Vendor Invoice No.";
-            END;
-
-
-            //** Betaalblokkade factuur **
-            //'On Hold'
-            IF "Document Type" = "Document Type"::Invoice THEN BEGIN
-                VALIDATE("On Hold", gTmpPurchHdr."On Hold");
-            END;
-            //** Betaalblokkade factuur **
-
-            IF INSERT(TRUE) THEN BEGIN
-
-                VALIDATE("Buy-from Vendor No.");
-
-                //'Document datum'
-                IF gTmpPurchHdr."Document Date" <> 0D THEN
-                    VALIDATE("Document Date", gTmpPurchHdr."Document Date");
-
-                //'Vervaldatum'
-                IF gTmpPurchHdr."Due Date" <> 0D THEN
-                    VALIDATE("Due Date", gTmpPurchHdr."Due Date");
-
-                //'Description'
-                "Posting Description" := gTmpPurchHdr."Posting Description";
-                IF "Posting Description" = '' THEN
-                    "Posting Description" := FORMAT("Document Type") + ' ' + "No.";
-
-                //** Buitenlandse valuta **
-                IF (gTmpPurchHdr."Currency Code" <> '') AND (gTmpPurchHdr."Currency Code" <> GeneralLedgerSetup."LCY Code") THEN BEGIN
-                    //'Currency Code'
-                    VALIDATE("Currency Code", gTmpPurchHdr."Currency Code");
-                END;
-                //** Buitenlandse valuta **
-
-                MODIFY;
-
-                CLEAR(gPartdel);
-
-                //Create Lines
-                ReadEasyInvoiceLine(gEasyInvoiceID);
-
-                //Create EasyInvoice Connection
-                CreateEasyInvConnection(gEasyInvoiceID, PurchHdr);
-
-            END;
-            //'Insert mislukt'
-
-            //<<10-08-2020 Dimensions on Header
-            LocDimSet := ReadEasyInvoiceDimension(0, '', '');
-            IF LocDimSet <> 0 THEN BEGIN
-                "Dimension Set ID" := LocDimSet;
-                MODIFY;
-            END;
-            //>>
-
-            ValidateChecks("No.");
-
-            //*************************************
-            //********   UITZOEKEN  ***************
-            //*************************************
-
-            //Uitzoeken
-            //IF NOT gPartdel THEN
-            //  PutRecord(EasyInvoiceID,"No.",'fCodNavInvoiceNo')
-            //ELSE
-            //  PutRecordDeel(EasyInvoiceID,"No.",'fCodNavInvoiceNo');
-
-            //StatusHeader := "No.";
-            Vendor.GET(gTmpPurchHdr."Buy-from Vendor No.");
-
-            //06-08-2018
-            IF gReleaseBln THEN
-                ReleasePurch.RUN(PurchHdr);
-            //>>
+        IF gTmpPurchHdr."Bank Account Code" <> '' THEN BEGIN
+            //'Bankrekening'
+            EVALUATE(PurchHdr."Bank Account Code", CheckBank(PurchHdr."Buy-from Vendor No.", gTmpPurchHdr."Prepmt. Posting Description"));
         END;
+
+        //'Bedrag'
+        PurchHdr.Amount := gTmpPurchHdr.Amount;
+
+        //'Bedrag incl. BTW'
+        PurchHdr."Amount Including VAT" := gTmpPurchHdr."Amount Including VAT";
+
+        //** Totaalcontrole factuur **
+        PurchHdr."Doc. Amount Incl. VAT" := gTmpPurchHdr."Doc. Amount Incl. VAT";
+        PurchHdr."Doc. Amount VAT" := gTmpPurchHdr."Doc. Amount VAT";
+        //** Totaalcontrole factuur **
+
+
+        //'Credit Memo'
+        IF PurchHdr."Document Type" = PurchHdr."Document Type"::"Credit Memo" THEN BEGIN
+            PurchHdr."Vendor Cr. Memo No." := gTmpPurchHdr."Vendor Invoice No.";
+        END;
+
+
+        //** Betaalblokkade factuur **
+        //'On Hold'
+        IF PurchHdr."Document Type" = PurchHdr."Document Type"::Invoice THEN BEGIN
+            PurchHdr.VALIDATE("On Hold", gTmpPurchHdr."On Hold");
+        END;
+        //** Betaalblokkade factuur **
+
+        IF PurchHdr.INSERT(TRUE) THEN BEGIN
+
+            PurchHdr.VALIDATE("Buy-from Vendor No.");
+
+            //'Document datum'
+            IF gTmpPurchHdr."Document Date" <> 0D THEN
+                PurchHdr.VALIDATE("Document Date", gTmpPurchHdr."Document Date");
+
+            //'Vervaldatum'
+            IF gTmpPurchHdr."Due Date" <> 0D THEN
+                PurchHdr.VALIDATE("Due Date", gTmpPurchHdr."Due Date");
+
+            //'Description'
+            PurchHdr."Posting Description" := gTmpPurchHdr."Posting Description";
+            IF PurchHdr."Posting Description" = '' THEN
+                PurchHdr."Posting Description" := FORMAT(PurchHdr."Document Type") + ' ' + PurchHdr."No.";
+
+            //** Buitenlandse valuta **
+            IF (gTmpPurchHdr."Currency Code" <> '') AND (gTmpPurchHdr."Currency Code" <> GeneralLedgerSetup."LCY Code") THEN BEGIN
+                //'Currency Code'
+                PurchHdr.VALIDATE("Currency Code", gTmpPurchHdr."Currency Code");
+            END;
+            //** Buitenlandse valuta **
+
+            PurchHdr.MODIFY;
+
+            CLEAR(gPartdel);
+
+            //Create Lines
+            ReadEasyInvoiceLine(gEasyInvoiceID);
+
+            //Create EasyInvoice Connection
+            CreateEasyInvConnection(gEasyInvoiceID, PurchHdr);
+
+        END;
+        //'Insert mislukt'
+
+        //<<10-08-2020 Dimensions on Header
+        LocDimSet := ReadEasyInvoiceDimension(0, '', '');
+        IF LocDimSet <> 0 THEN BEGIN
+            PurchHdr."Dimension Set ID" := LocDimSet;
+            PurchHdr.MODIFY;
+        END;
+        //>>
+
+        ValidateChecks(PurchHdr."No.");
+
+        //*************************************
+        //********   UITZOEKEN  ***************
+        //*************************************
+
+        //Uitzoeken
+        //IF NOT gPartdel THEN
+        //  PutRecord(EasyInvoiceID,"No.",'fCodNavInvoiceNo')
+        //ELSE
+        //  PutRecordDeel(EasyInvoiceID,"No.",'fCodNavInvoiceNo');
+
+        //StatusHeader := "No.";
+        Vendor.GET(gTmpPurchHdr."Buy-from Vendor No.");
+
+        //06-08-2018
+        IF gReleaseBln THEN
+            ReleasePurch.RUN(PurchHdr);
+        //>>
+
         Rec := PurchHdr;
     end;
 
@@ -495,78 +495,78 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
             REPEAT
                 CLEAR(partdel);
 
-                WITH PurchLine DO BEGIN
-                    INIT;
+                //WITH PurchLine DO BEGIN
+                    PurchLine.INIT;
 
                     NextLineNo += 10000; //****** -----OrderMatch----- ******
 
                     //'Documentsoort'
-                    VALIDATE("Document Type", PurchHdr."Document Type");
+                    PurchLine.VALIDATE("Document Type", PurchHdr."Document Type");
                     //'Documentnummer'
-                    VALIDATE("Document No.", PurchHdr."No.");
+                    PurchLine.VALIDATE("Document No.", PurchHdr."No.");
 
 
                     IF NOT OrderMatch THEN BEGIN     //****** -----OrderMatch----- ******
 
                         //'Regelnr'
-                        "Line No." := gTmpPurchLine."Line No." * 10000;
+                        PurchLine."Line No." := gTmpPurchLine."Line No." * 10000;
 
                     END ELSE                    //****** -----OrderMatch----- ******
-                        "Line No." := NextLineNo; //****** -----OrderMatch----- ******
+                        PurchLine."Line No." := NextLineNo; //****** -----OrderMatch----- ******
 
                     //Create a connection between Line no's
-                    gArrarEasyInvoiceLineNo["Line No." / 100] := gTmpPurchLine."Line No.";//****** -----OrderMatch----- ******
+                    gArrarEasyInvoiceLineNo[PurchLine."Line No." / 100] := gTmpPurchLine."Line No.";//****** -----OrderMatch----- ******
 
                     //<<***** ORDERMATCH
                     IF gTmpPurchLine.Type <> gTmpPurchLine.Type::"Charge (Item)" THEN BEGIN  //******* CHARGE 21-01-2014 *****
 
                         //Ontvangst
                         IF gTmpPurchLine."Document Type" = gTmpPurchLine."Document Type"::Invoice THEN BEGIN
-                            "Receipt No." := gTmpPurchLine."Receipt No.";
-                            "Receipt Line No." := gTmpPurchLine."Receipt Line No.";
+                            PurchLine."Receipt No." := gTmpPurchLine."Receipt No.";
+                            PurchLine."Receipt Line No." := gTmpPurchLine."Receipt Line No.";
 
-                            IF "Receipt No." <> '' THEN//01-10-2017 Lege Ontvangsten
-                                IF PurchRcpLine.GET("Receipt No.", "Receipt Line No.") THEN BEGIN
+                            IF PurchLine."Receipt No." <> '' THEN//01-10-2017 Lege Ontvangsten
+                                IF PurchRcpLine.GET(PurchLine."Receipt No.", PurchLine."Receipt Line No.") THEN BEGIN
                                     CheckBlockDeellev(PurchLine, partdel);
                                     IF NOT partdel THEN
                                         InsertInvLineFromRcptLine(PurchLine)
 
                                     ELSE BEGIN
-                                        "Receipt No." := '';
-                                        "Receipt Line No." := 0;
-                                        VALIDATE(Type, PurchRcpLine.Type);
-                                        VALIDATE("No.", PurchRcpLine."No.");
-                                        VALIDATE("Variant Code", PurchRcpLine."Variant Code");
-                                        VALIDATE("Location Code", PurchRcpLine."Location Code");
-                                        VALIDATE("Unit of Measure", PurchRcpLine."Unit of Measure");
-                                        VALIDATE("Unit of Measure Code", PurchRcpLine."Unit of Measure Code");
-                                        VALIDATE(Quantity, PurchRcpLine.Quantity);
+                                        PurchLine."Receipt No." := '';
+                                        PurchLine."Receipt Line No." := 0;
+                                        PurchLine.VALIDATE(Type, PurchRcpLine.Type);
+                                        PurchLine.VALIDATE("No.", PurchRcpLine."No.");
+                                        PurchLine.VALIDATE("Variant Code", PurchRcpLine."Variant Code");
+                                        PurchLine.VALIDATE("Location Code", PurchRcpLine."Location Code");
+                                        PurchLine.VALIDATE("Unit of Measure", PurchRcpLine."Unit of Measure");
+                                        PurchLine.VALIDATE("Unit of Measure Code", PurchRcpLine."Unit of Measure Code");
+                                        PurchLine.VALIDATE(Quantity, PurchRcpLine.Quantity);
                                     END;
                                 END;
                         END;
                     END;
 
                     //Retour 01-10-2017
-                    IF "Document Type" = "Document Type"::"Credit Memo" THEN BEGIN
-                        "Return Shipment No." := gTmpPurchLine."Receipt No.";
-                        "Return Shipment Line No." := gTmpPurchLine."Receipt Line No.";
+                    IF PurchLine."Document Type" = PurchLine."Document Type"::"Credit Memo" THEN BEGIN
+                        PurchLine."Return Shipment No." := gTmpPurchLine."Receipt No.";
+                        PurchLine."Return Shipment Line No." := gTmpPurchLine."Receipt Line No.";
 
-                        IF "Return Shipment No." <> '' THEN//01-10-2017 Lege Ontvangsten
-                            IF PurchRetShpLine.GET("Return Shipment No.", "Return Shipment Line No.") THEN BEGIN
+                        IF PurchLine."Return Shipment No." <> '' THEN//01-10-2017 Lege Ontvangsten
+                            IF PurchRetShpLine.GET(PurchLine."Return Shipment No.", PurchLine."Return Shipment Line No.") THEN BEGIN
                                 CheckBlockDeellev(PurchLine, partdel);
                                 IF NOT partdel THEN
-                                    IF "Document Type" = "Document Type"::"Credit Memo" THEN
+                                    IF PurchLine."Document Type" = PurchLine."Document Type"::"Credit Memo" THEN
                                         InsertInvLineFromRetShptLine(PurchLine)  //01-10-2017
                                     ELSE BEGIN
-                                        "Receipt No." := '';
-                                        "Receipt Line No." := 0;
-                                        VALIDATE(Type, PurchRcpLine.Type);
-                                        VALIDATE("No.", PurchRcpLine."No.");
-                                        VALIDATE("Variant Code", PurchRcpLine."Variant Code");
-                                        VALIDATE("Location Code", PurchRcpLine."Location Code");
-                                        VALIDATE("Unit of Measure", PurchRcpLine."Unit of Measure");
-                                        VALIDATE("Unit of Measure Code", PurchRcpLine."Unit of Measure Code");
-                                        VALIDATE(Quantity, PurchRcpLine.Quantity);
+                                        PurchLine."Receipt No." := '';
+                                        PurchLine."Receipt Line No." := 0;
+                                        PurchLine.VALIDATE(Type, PurchRcpLine.Type);
+                                        PurchLine.VALIDATE("No.", PurchRcpLine."No.");
+                                        PurchLine.VALIDATE("Variant Code", PurchRcpLine."Variant Code");
+                                        PurchLine.VALIDATE("Location Code", PurchRcpLine."Location Code");
+                                        PurchLine.VALIDATE("Unit of Measure", PurchRcpLine."Unit of Measure");
+                                        PurchLine.VALIDATE("Unit of Measure Code", PurchRcpLine."Unit of Measure Code");
+                                        PurchLine.VALIDATE(Quantity, PurchRcpLine.Quantity);
                                     END;
                             END;
                     END;
@@ -581,149 +581,149 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
                       5 : Type:=Type::"Charge (Item)";
                     END;
                     */
-                    Type := gTmpPurchLine.Type;
+                    PurchLine.Type := gTmpPurchLine.Type;
 
                     //'Nr.'
-                    IF (gTmpPurchLine."Receipt No." = '') OR partdel OR ((Type = Type::"Charge (Item)") AND ("Document Type" = "Document Type"::Invoice)) THEN BEGIN //01-10-2017
+                    IF (gTmpPurchLine."Receipt No." = '') OR partdel OR ((PurchLine.Type = PurchLine.Type::"Charge (Item)") AND (PurchLine."Document Type" = PurchLine."Document Type"::Invoice)) THEN BEGIN //01-10-2017
 
-                        "No." := gTmpPurchLine."No.";
+                        PurchLine."No." := gTmpPurchLine."No.";
 
                         PurchLine."Receipt No." := '';
                         PurchLine."Receipt Line No." := 0;
 
-                        VALIDATE("No.");
+                        PurchLine.VALIDATE("No.");
 
-                        "Receipt No." := gTmpPurchLine."Receipt No.";
-                        "Receipt Line No." := gTmpPurchLine."Receipt Line No.";
+                        PurchLine."Receipt No." := gTmpPurchLine."Receipt No.";
+                        PurchLine."Receipt Line No." := gTmpPurchLine."Receipt Line No.";
                     END;
 
 
                     //'Omschrijving'
-                    Description := gTmpPurchLine.Description;
+                    PurchLine.Description := gTmpPurchLine.Description;
 
                     //eenheid
-                    "Unit of Measure Code" := gTmpPurchLine."Unit of Measure Code";
+                    PurchLine."Unit of Measure Code" := gTmpPurchLine."Unit of Measure Code";
 
 
                     //'Aantal'
-                    Quantity := gTmpPurchLine.Quantity;
+                    PurchLine.Quantity := gTmpPurchLine.Quantity;
 
                     //'Credit memo'
 
                     //'Eenheidskosten'
-                    "Direct Unit Cost" := gTmpPurchLine."Direct Unit Cost";
+                    PurchLine."Direct Unit Cost" := gTmpPurchLine."Direct Unit Cost";
 
                     //<<01-10-2017
                     IF Vendor."Prices Including VAT" THEN BEGIN
                         lDecVat := gTmpPurchLine."VAT Base Amount";
-                        "Direct Unit Cost" += lDecVat;
+                        PurchLine."Direct Unit Cost" += lDecVat;
                     END;
                     //>>
 
                     //** Order matching **
                     //'Ontvangst Nr.'
                     IF (gTmpPurchLine."Receipt No." <> '') AND NOT partdel THEN BEGIN
-                        IF "Document Type" = "Document Type"::Invoice THEN BEGIN //23-01-2018
+                        IF PurchLine."Document Type" = PurchLine."Document Type"::Invoice THEN BEGIN //23-01-2018
 
-                            "Receipt No." := gTmpPurchLine."Receipt No.";
-                            "Receipt Line No." := gTmpPurchLine."Receipt Line No.";
+                            PurchLine."Receipt No." := gTmpPurchLine."Receipt No.";
+                            PurchLine."Receipt Line No." := gTmpPurchLine."Receipt Line No.";
                             //>>
                         END; //23-01-2018
 
                         //<<23-01-2018 ******************
-                        IF "Document Type" = "Document Type"::"Credit Memo" THEN BEGIN
+                        IF PurchLine."Document Type" = PurchLine."Document Type"::"Credit Memo" THEN BEGIN
 
-                            "Return Shipment No." := gTmpPurchLine."Receipt No.";
-                            "Return Shipment Line No." := gTmpPurchLine."Receipt Line No.";
+                            PurchLine."Return Shipment No." := gTmpPurchLine."Receipt No.";
+                            PurchLine."Return Shipment Line No." := gTmpPurchLine."Receipt Line No.";
                             //>>
                         END;
                         //>> *****************************
 
-                        VALIDATE(Quantity);
+                        PurchLine.VALIDATE(Quantity);
 
                         IF gTmpPurchLine."Unit of Measure Code" <> '' THEN BEGIN
                             //'Eenheidscode'
-                            "Unit of Measure Code" := gTmpPurchLine."Unit of Measure Code";
+                            PurchLine."Unit of Measure Code" := gTmpPurchLine."Unit of Measure Code";
                             IF (PurchLine."Quantity Received" = 0) AND (PurchLine."Return Qty. Shipped" = 0) THEN //06-03-2018
                                 IF NOT PurchLine."Drop Shipment" THEN //01-10-2017
-                                    VALIDATE("Unit of Measure Code");
+                                    PurchLine.VALIDATE("Unit of Measure Code");
                         END;
 
                         //'Eenheidskosten'
-                        "Direct Unit Cost" := gTmpPurchLine."Direct Unit Cost";
+                        PurchLine."Direct Unit Cost" := gTmpPurchLine."Direct Unit Cost";
 
                     END;
 
                     //'Ontvangst Regelnr.'
                     IF gTmpPurchLine."Receipt Line No." <> 0 THEN
-                        IF "Document Type" = "Document Type"::Invoice THEN//**** 22-06-2018
-                            "Receipt Line No." := gTmpPurchLine."Receipt Line No."
+                        IF PurchLine."Document Type" = PurchLine."Document Type"::Invoice THEN//**** 22-06-2018
+                            PurchLine."Receipt Line No." := gTmpPurchLine."Receipt Line No."
                         ELSE
-                            "Return Shipment Line No." := gTmpPurchLine."Receipt Line No.";
+                            PurchLine."Return Shipment Line No." := gTmpPurchLine."Receipt Line No.";
                     //** Order matching **
 
                     //'kortingspercentage'
                     IF gTmpPurchLine."Line Discount %" <> 0 THEN
-                        VALIDATE("Line Discount %", gTmpPurchLine."Line Discount %")
+                        PurchLine.VALIDATE("Line Discount %", gTmpPurchLine."Line Discount %")
 
                     ELSE
                         //<<11-09-2018
-                        VALIDATE("Line Discount %", 0);
+                        PurchLine.VALIDATE("Line Discount %", 0);
                     //>>
 
                     IF gTmpPurchLine."Shortcut Dimension 1 Code" <> '' THEN BEGIN
                         //'DimCode1'
-                        "Shortcut Dimension 1 Code" := gTmpPurchLine."Shortcut Dimension 1 Code";
-                        VALIDATE("Shortcut Dimension 1 Code");
+                        PurchLine."Shortcut Dimension 1 Code" := gTmpPurchLine."Shortcut Dimension 1 Code";
+                        PurchLine.VALIDATE("Shortcut Dimension 1 Code");
                     END;
                     IF gTmpPurchLine."Shortcut Dimension 2 Code" <> '' THEN BEGIN
                         //'DimCode2'
-                        "Shortcut Dimension 2 Code" := gTmpPurchLine."Shortcut Dimension 2 Code";
-                        VALIDATE("Shortcut Dimension 2 Code");
+                        PurchLine."Shortcut Dimension 2 Code" := gTmpPurchLine."Shortcut Dimension 2 Code";
+                        PurchLine.VALIDATE("Shortcut Dimension 2 Code");
                     END;
 
                     //'BTW Prod. Boekgrp'
                     IF gTmpPurchLine."VAT Prod. Posting Group" <> '' THEN BEGIN
-                        VALIDATE("VAT Prod. Posting Group", gTmpPurchLine."VAT Prod. Posting Group");
+                        PurchLine.VALIDATE("VAT Prod. Posting Group", gTmpPurchLine."VAT Prod. Posting Group");
                     END;
 
                     IF gTmpPurchLine."Gen. Prod. Posting Group" <> '' THEN BEGIN
-                        VALIDATE("Gen. Prod. Posting Group", gTmpPurchLine."Gen. Prod. Posting Group");
+                        PurchLine.VALIDATE("Gen. Prod. Posting Group", gTmpPurchLine."Gen. Prod. Posting Group");
                     END;
 
                     //<<11-02-2015 Project No
                     IF gTmpPurchLine."Job No." <> '' THEN BEGIN
-                        VALIDATE("Job No.", gTmpPurchLine."Job No.");
+                        PurchLine.VALIDATE("Job No.", gTmpPurchLine."Job No.");
                     END;
                     //>>
 
                     IF partdel THEN
-                        Description := 'DEELLEV ' + COPYSTR(Description, 1, 42);
+                       PurchLine.Description := 'DEELLEV ' + COPYSTR(PurchLine.Description, 1, 42);
                     //
 
                     //<<20-02-2019
                     IF OrderMatch THEN BEGIN
-                        VALIDATE("Direct Unit Cost", gTmpPurchLine."Direct Unit Cost");
+                        PurchLine.VALIDATE("Direct Unit Cost", gTmpPurchLine."Direct Unit Cost");
                     END;
                     //>>
 
                     //<<03-04-2020 TransHistorisch posten
                     IF gTmpPurchLine."Deferral Code" <> '' THEN
-                        VALIDATE("Deferral Code", gTmpPurchLine."Deferral Code");
+                        PurchLine.VALIDATE("Deferral Code", gTmpPurchLine."Deferral Code");
                     //>>
 
-                    IF NOT INSERT(TRUE) THEN;
+                    IF NOT PurchLine.INSERT(TRUE) THEN;
                     //'Insert misluk'
 
                     //01-10-2017
-                    IF (PurchLine."Receipt No." <> '') AND (Type <> Type::"Charge (Item)") THEN
-                        InsertPurchExtText(PurchLine, "Receipt No.");
+                    IF (PurchLine."Receipt No." <> '') AND (PurchLine.Type <> PurchLine.Type::"Charge (Item)") THEN
+                        InsertPurchExtText(PurchLine, PurchLine."Receipt No.");
 
                     //01-10-2017
-                    IF (PurchLine."Return Shipment No." <> '') AND (Type <> Type::"Charge (Item)") THEN
-                        InsertPurchExtText(PurchLine, "Return Shipment No.");
+                    IF (PurchLine."Return Shipment No." <> '') AND (PurchLine.Type <> PurchLine.Type::"Charge (Item)") THEN
+                        InsertPurchExtText(PurchLine, PurchLine."Return Shipment No.");
 
-                END;
+                //END;
 
             UNTIL gTmpPurchLine.NEXT = 0;
 
@@ -740,33 +740,37 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
         IF gTmpDimension.FINDSET THEN
             REPEAT
 
-                WITH DimSetEntryTmp DO BEGIN
-                    INIT;
-                    "Dimension Set ID" := 37;
+                //WITH DimSetEntryTmp DO BEGIN
+                    DimSetEntryTmp.INIT;
+                    DimSetEntryTmp."Dimension Set ID" := 37;
                     //EVALUATE("Dimension Code",);
                     //IF "Dimension Code" <> '' THEN
-                    VALIDATE("Dimension Code", gTmpDimension."Dimension Code");
+                    DimSetEntryTmp.VALIDATE("Dimension Code", gTmpDimension."Dimension Code");
 
-                    IF EVALUATE("Dimension Value Code", gTmpDimension.Name) THEN//GetRecordDim('fCodDimensionValue'));
+                    IF EVALUATE(DimSetEntryTmp."Dimension Value Code", gTmpDimension.Name) THEN//GetRecordDim('fCodDimensionValue'));
                                                                                 //IF "Dimension Value Code" <> '' THEN
-                        VALIDATE("Dimension Value Code");
+                        DimSetEntryTmp.VALIDATE("Dimension Value Code");
 
-                    IF NOT INSERT(TRUE) THEN;
+                    IF NOT DimSetEntryTmp.INSERT(TRUE) THEN;
                     //'Insert mislukt'
 
                     CASE TRUE OF
-                        GeneralLedgerSetup."Global Dimension 1 Code" = "Dimension Code":
-                            locDimension1 := "Dimension Value Code";
-                        GeneralLedgerSetup."Global Dimension 2 Code" = "Dimension Code":
-                            locDimension2 := "Dimension Value Code";
+                        GeneralLedgerSetup."Global Dimension 1 Code" = DimSetEntryTmp."Dimension Code":
+                            locDimension1 := DimSetEntryTmp."Dimension Value Code";
+                        GeneralLedgerSetup."Global Dimension 2 Code" = DimSetEntryTmp."Dimension Code":
+                            locDimension2 := DimSetEntryTmp."Dimension Value Code";
                     END;
 
-                END;
+                //END;
             UNTIL gTmpDimension.NEXT = 0;
         EXIT(DimMgt.GetDimensionSetID(DimSetEntryTmp));
     end;
 
 
+    /// <summary>
+    /// ValidateChecks.
+    /// </summary>
+    /// <param name="DocNo">Code[20].</param>
     [Scope('onPrem')]
     procedure ValidateChecks(DocNo: Code[20]);
     var
@@ -854,6 +858,11 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
         SELECTLATESTVERSION;
     end;
 
+    /// <summary>
+    /// CheckBTW.
+    /// </summary>
+    /// <param name="ParEasyInvoiceLineNo">Integer.</param>
+    /// <param name="ParPurchLine">Record 39.</param>
     [Scope('onPrem')]
     procedure CheckBTW(ParEasyInvoiceLineNo: Integer; ParPurchLine: Record 39);
     var
@@ -907,32 +916,46 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
 
     end;
 
+    /// <summary>
+    /// CheckBank.
+    /// </summary>
+    /// <param name="Vendor">Code[20].</param>
+    /// <param name="BankNo">Text[30].</param>
+    /// <returns>Return value of type Code[20].</returns>
     [Scope('onPrem')]
     procedure CheckBank(Vendor: Code[20]; BankNo: Text[30]): Code[20];
     var
         LocVendBankAcc: Record 288;
     begin
-        WITH LocVendBankAcc DO BEGIN
-            SETRANGE("Vendor No.", Vendor);
-            SETRANGE("Bank Account No.", COPYSTR(BankNo, 1, 30));
-            IF NOT FINDFIRST THEN BEGIN
-                SETRANGE("Bank Account No.");
-                SETRANGE(IBAN, BankNo);
-                IF NOT FINDFIRST THEN
+        //WITH LocVendBankAcc DO BEGIN
+            LocVendBankAcc.SETRANGE("Vendor No.", Vendor);
+            LocVendBankAcc.SETRANGE("Bank Account No.", COPYSTR(BankNo, 1, 30));
+            IF NOT LocVendBankAcc.FINDFIRST THEN BEGIN
+                LocVendBankAcc.SETRANGE("Bank Account No.");
+                LocVendBankAcc.SETRANGE(IBAN, BankNo);
+                IF NOT LocVendBankAcc.FINDFIRST THEN
                     ERROR(STRSUBSTNO('Bankrekening bestaat niet voor leverancier %1', Vendor))
                 ELSE
-                    EXIT(Code);
+                    EXIT(LocVendBankAcc.Code);
             END;
-            EXIT(Code);
-        END;
+            EXIT(LocVendBankAcc.Code);
+        //END;
     end;
 
+    /// <summary>
+    /// ExitStatusHeader.
+    /// </summary>
+    /// <returns>Return variable ExitTxt of type Text[250].</returns>
     [Scope('onPrem')]
     procedure ExitStatusHeader() ExitTxt: Text[250];
     begin
         //EXIT(StatusHeader);
     end;
 
+    /// <summary>
+    /// InsertInvLineFromRcptLine.
+    /// </summary>
+    /// <param name="PurchLine">VAR Record 39.</param>
     [Scope('onPrem')]
     procedure InsertInvLineFromRcptLine(var PurchLine: Record 39);
     var
@@ -1027,6 +1050,11 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
     end;
 
 
+    /// <summary>
+    /// InsertPurchExtText.
+    /// </summary>
+    /// <param name="PurchLine">VAR Record 39.</param>
+    /// <param name="CommentText">Text[50].</param>
     [Scope('onPrem')]
     procedure InsertPurchExtText(var PurchLine: Record 39; CommentText: Text[50]);
     var
@@ -1059,12 +1087,21 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
         IF ToPurchLine.INSERT THEN;
     end;
 
+    /// <summary>
+    /// SetOrderMactch.
+    /// </summary>
+    /// <param name="ParOM">Boolean.</param>
     [Scope('onPrem')]
     procedure SetOrderMactch(ParOM: Boolean);
     begin
         OrderMatch := ParOM
     end;
 
+    /// <summary>
+    /// CheckBlockDeellev.
+    /// </summary>
+    /// <param name="PurchLine">VAR Record 39.</param>
+    /// <param name="pPartdel">VAR Boolean.</param>
     [Scope('onPrem')]
     procedure CheckBlockDeellev(var PurchLine: Record 39; var pPartdel: Boolean);
     var
@@ -1091,6 +1128,11 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
             gPartdel := TRUE;
     end;
 
+    /// <summary>
+    /// ConvDecToText.
+    /// </summary>
+    /// <param name="pValue">Decimal.</param>
+    /// <returns>Return variable result of type Text[30].</returns>
     [Scope('onPrem')]
     procedure ConvDecToText(pValue: Decimal) result: Text[30];
     begin
@@ -1098,6 +1140,10 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
         result := CONVERTSTR(result, ',', '.');
     end;
 
+    /// <summary>
+    /// CreateVatAmountLines.
+    /// </summary>
+    /// <param name="Purchline">VAR Record 39.</param>
     [Scope('onPrem')]
     procedure CreateVatAmountLines(var Purchline: Record 39);
     var
@@ -1109,6 +1155,10 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
         TempVATAmountLineOrg.MODIFYALL("VAT Amount", 0);
     end;
 
+    /// <summary>
+    /// AdjustVatAmount.
+    /// </summary>
+    /// <param name="PurchLine">VAR Record 39.</param>
     [Scope('onPrem')]
     procedure AdjustVatAmount(var PurchLine: Record 39);
     var
@@ -1119,6 +1169,10 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
         PurchLine.UpdateVATOnLines(1, PurchHdr, PurchLine, TempVATAmountLineOrg);
     end;
 
+    /// <summary>
+    /// CheckCharge.
+    /// </summary>
+    /// <param name="PurchLine">VAR Record 39.</param>
     [Scope('onPrem')]
     procedure CheckCharge(var PurchLine: Record 39);
     var
@@ -1133,35 +1187,35 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
     begin
         IF NOT Currency.GET(PurchLine."Currency Code") THEN
             Currency.INIT;
-        WITH PurchLine DO BEGIN
-            GET("Document Type", "Document No.", "Line No.");
-            TESTFIELD(Type, Type::"Charge (Item)");
-            TESTFIELD("No.");
-            TESTFIELD(Quantity);
+        //WITH PurchLine DO BEGIN
+            PurchLine.GET(PurchLine."Document Type", PurchLine."Document No.", PurchLine."Line No.");
+            PurchLine.TESTFIELD(PurchLine.Type, PurchLine.Type::"Charge (Item)");
+            PurchLine.TESTFIELD("No.");
+            PurchLine.TESTFIELD(Quantity);
 
             ItemChargeAssgntPurch.RESET;
-            ItemChargeAssgntPurch.SETRANGE("Document Type", "Document Type");
-            ItemChargeAssgntPurch.SETRANGE("Document No.", "Document No.");
-            ItemChargeAssgntPurch.SETRANGE("Document Line No.", "Line No.");
-            ItemChargeAssgntPurch.SETRANGE("Item Charge No.", "No.");
+            ItemChargeAssgntPurch.SETRANGE("Document Type", PurchLine."Document Type");
+            ItemChargeAssgntPurch.SETRANGE("Document No.", PurchLine."Document No.");
+            ItemChargeAssgntPurch.SETRANGE("Document Line No.", PurchLine."Line No.");
+            ItemChargeAssgntPurch.SETRANGE("Item Charge No.", PurchLine."No.");
             IF NOT ItemChargeAssgntPurch.FINDLAST THEN BEGIN
-                ItemChargeAssgntPurch."Document Type" := "Document Type";
-                ItemChargeAssgntPurch."Document No." := "Document No.";
-                ItemChargeAssgntPurch."Document Line No." := "Line No.";
-                ItemChargeAssgntPurch."Item Charge No." := "No.";
+                ItemChargeAssgntPurch."Document Type" := PurchLine."Document Type";
+                ItemChargeAssgntPurch."Document No." := PurchLine."Document No.";
+                ItemChargeAssgntPurch."Document Line No." := PurchLine."Line No.";
+                ItemChargeAssgntPurch."Item Charge No." := PurchLine."No.";
 
-                IF ("Inv. Discount Amount" = 0) AND (NOT PurchHdr."Prices Including VAT") THEN
-                    ItemChargeAssgntPurch."Unit Cost" := "Unit Cost"
+                IF (PurchLine."Inv. Discount Amount" = 0) AND (NOT PurchHdr."Prices Including VAT") THEN
+                    ItemChargeAssgntPurch."Unit Cost" := PurchLine."Unit Cost"
                 ELSE
                     IF PurchHdr."Prices Including VAT" THEN
                         ItemChargeAssgntPurch."Unit Cost" :=
                           ROUND(
-                            ("Line Amount" - "Inv. Discount Amount") / Quantity / (1 + "VAT %" / 100),
+                            (PurchLine."Line Amount" - PurchLine."Inv. Discount Amount") / PurchLine.Quantity / (1 + PurchLine."VAT %" / 100),
                             Currency."Unit-Amount Rounding Precision")
                     ELSE
                         ItemChargeAssgntPurch."Unit Cost" :=
                           ROUND(
-                            ("Line Amount" - "Inv. Discount Amount") / Quantity,
+                            (PurchLine."Line Amount" - PurchLine."Inv. Discount Amount") / PurchLine.Quantity,
                             Currency."Unit-Amount Rounding Precision");
 
             END;
@@ -1170,20 +1224,24 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
             IF PurchRcptLine.GET(PurchLine."Receipt No.", PurchLine."Receipt Line No.") THEN
                 GetReceipts.GetItemChargeAssgnt(PurchRcptLine, PurchLine."Qty. to Invoice");  //12-07-2018
             IF PurchShptLine.GET(PurchLine."Return Shipment No.", PurchLine."Return Shipment Line No.") THEN
-                GetRetShp.GetItemChargeAssgnt(PurchShptLine, "Qty. to Invoice");  //12-07-2018
+                GetRetShp.GetItemChargeAssgnt(PurchShptLine, PurchLine."Qty. to Invoice");  //12-07-2018
                                                                                   //>>12-07-2018  ***********
 
-            IF "Document Type" IN ["Document Type"::"Return Order", "Document Type"::"Credit Memo"] THEN
-                AssignItemChargePurch.CreateDocChargeAssgnt(ItemChargeAssgntPurch, "Return Shipment No.")
+            IF PurchLine."Document Type" IN [PurchLine."Document Type"::"Return Order", PurchLine."Document Type"::"Credit Memo"] THEN
+                AssignItemChargePurch.CreateDocChargeAssgnt(ItemChargeAssgntPurch, PurchLine."Return Shipment No.")
             ELSE
-                AssignItemChargePurch.CreateDocChargeAssgnt(ItemChargeAssgntPurch, "Receipt No.");
+                AssignItemChargePurch.CreateDocChargeAssgnt(ItemChargeAssgntPurch, PurchLine."Receipt No.");
 
             AssignItemChargePurch.SuggestAssgnt2(PurchLine, PurchLine.Quantity, PurchLine.Amount, 1);
             CLEAR(AssignItemChargePurch);
 
-        END;
+        //END;
     end;
 
+    /// <summary>
+    /// InsertInvLineFromRetShptLine.
+    /// </summary>
+    /// <param name="PurchLine">VAR Record 39.</param>
     [Scope('onPrem')]
     procedure InsertInvLineFromRetShptLine(var PurchLine: Record 39);
     var
@@ -1272,6 +1330,12 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
         ItemTrackingMgt.CopyHandledItemTrkgToInvLine(PurchOrderLine, PurchLine);
     end;
 
+    /// <summary>
+    /// ConvertDate.
+    /// </summary>
+    /// <param name="parTxt">Text[1024].</param>
+    /// <param name="parDate">VAR Date.</param>
+    /// <returns>Return value of type Text[20].</returns>
     [Scope('onPrem')]
     procedure ConvertDate(parTxt: Text[1024]; var parDate: Date): Text[20];
     var
@@ -1291,6 +1355,10 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
     // *****************************************
     // *******        JSon Webcall      ********
     // *****************************************
+    /// <summary>
+    /// IPget.
+    /// </summary>
+    /// <returns>Return value of type Text.</returns>
     procedure IPget(): Text;
     var
         client: HttpClient;
@@ -1308,6 +1376,10 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
 
     end;
 
+    /// <summary>
+    /// WebServiceGet.
+    /// </summary>
+    /// <returns>Return value of type Text.</returns>
     procedure WebServiceGet(): Text
 
     var
@@ -1317,6 +1389,12 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
 
     end;
 
+    /// <summary>
+    /// getJsonTextField.
+    /// </summary>
+    /// <param name="O">JsonObject.</param>
+    /// <param name="Member">Text.</param>
+    /// <returns>Return value of type text.</returns>
     procedure getJsonTextField(O: JsonObject; Member: Text): text;
     var
         result: JsonToken;

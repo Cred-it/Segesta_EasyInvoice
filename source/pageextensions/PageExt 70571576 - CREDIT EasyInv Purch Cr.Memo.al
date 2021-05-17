@@ -24,7 +24,7 @@ pageextension 70571576 "CREDIT EasyInv Purch Cr.Memo" extends "Purchase Credit M
 
     trigger OnAfterGetRecord()
     begin
-        IF NOT EasyInvoiceCon.GET(EasyInvoiceCon.Type::"Purchase Credit Memo", "No.") then
+        IF NOT EasyInvoiceCon.GET(EasyInvoiceCon.Type::"Purchase Credit Memo", Rec."No.") then
             EasyInvoiceCon.INIT;
     end;
 

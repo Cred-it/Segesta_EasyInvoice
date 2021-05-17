@@ -24,7 +24,7 @@ pageextension 70571579 "CREDIT EasyInv VendLed Entries" extends "Vendor Ledger E
 
     trigger OnAfterGetRecord()
     begin
-        IF NOT EasyInvoiceCon.GET(EasyInvoiceCon.Type::"Vendor Ledger Entry", "Entry No.") then
+        IF NOT EasyInvoiceCon.GET(EasyInvoiceCon.Type::"Vendor Ledger Entry", Rec."Entry No.") then
             EasyInvoiceCon.INIT;
     end;
 
