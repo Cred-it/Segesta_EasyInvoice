@@ -190,14 +190,14 @@ xmlport 70571577 "CREDIT EasyInvoice Import"
                         gTMPHeader := TmpPurchaseHeader;
                         IF gTMPHeader.INSERT THEN;
 
-                        
+
                     END;
 
                     //Blokkade weghalen
                     IF fOptStatus = '1' THEN BEGIN
                         //tijdelijke controle
                         If gEasyInvoiceID = 0 THEN begin
-                            gTxtResult := 'EasyInvoice is 0 kom ik hier' + FORMAT(gEasyInvoiceID);
+                            gTxtResult := 'EasyInvoice is ' + FORMAT(gEasyInvoiceID);
                             gFault := TRUE;
                             currXMLport.SKIP;
                             EXIT;
@@ -345,11 +345,11 @@ xmlport 70571577 "CREDIT EasyInvoice Import"
                         gFault := TRUE;
                         gTxtFault := GETLASTERRORTEXT;
                     END;
-                 //<<12-02-2021
-                 IF TmpPurchaseLine."Receipt No." <> '' THEN
-                   gBlnOrder := TRUE;
-                 //>>
-	        end;
+                    //<<12-02-2021
+                    IF TmpPurchaseLine."Receipt No." <> '' THEN
+                        gBlnOrder := TRUE;
+                    //>>
+                end;
             }
             tableelement(tmpdimensionline; "Dimension Value")
             {
