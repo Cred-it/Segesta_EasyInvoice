@@ -143,6 +143,7 @@ xmlport 70571575 "CREDIT EasyInv MasterData"
                     //>>****************************
 
                     CreateTables(TableFilter);
+                    CreateTablesNames(TableNameFilter);
                 end;
             }
         }
@@ -170,6 +171,7 @@ xmlport 70571575 "CREDIT EasyInv MasterData"
         RecRef: RecordRef;
         TableName: Text;
         TableFilter: Text;
+        TableNameFilter: Text;
         FieldFilter: Text;
         KeyFilter: Text;
         RecordFilter: Text;
@@ -302,6 +304,20 @@ xmlport 70571575 "CREDIT EasyInv MasterData"
 
     end;
 
+    local procedure CreateTablesNames(TableFilterName: Text);
+    var
+        OBjRec: Record "Table Metadata";
+    begin
+        OBjRec.SetFilter(Name, '@*%1*', TableFilterName);
+        IF OBjRec.FINDSET THEN
+            REPEAT
+            //IF CONFIRM(FORMAT(OBjRec.ID)) then;
+            // IF EVALUATE(Table.Number,FORMAT(OBjRec.ID)) THEN
+            //   IF Table.INSERT THEN;
+            UNTIL ObjRec.NEXT = 0;
+
+    end;
+
     local procedure CreateFields(TableFilterIn: Integer; FieldFilterIn: Text);
     var
         FieldRec: Record "Field";
@@ -323,12 +339,14 @@ xmlport 70571575 "CREDIT EasyInv MasterData"
     /// <param name="FieldFilterIn">VAR Text.</param>
     /// <param name="KeyIn">VAR Text.</param>
     /// <param name="RecordFilterIn">VAR Text.</param>
-    procedure SetParameters(var TableFilterIn: Text; var FieldFilterIn: Text; var KeyIn: Text; var RecordFilterIn: Text);
+    /// <param name="TableNameFiltIn">VAR text.</param>
+    procedure SetParameters(var TableFilterIn: Text; var FieldFilterIn: Text; var KeyIn: Text; var RecordFilterIn: Text; var TableNameFiltIn: text);
     begin
         TableFilter := TableFilterIn;
         FieldFilter := FieldFilterIn;
         KeyFilter := KeyIn;
         RecordFilter := RecordFilterIn;
+        TableNameFilter := TableNameFiltIn;
     end;
 }
 

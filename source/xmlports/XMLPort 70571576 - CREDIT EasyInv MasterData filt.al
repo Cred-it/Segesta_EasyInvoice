@@ -29,6 +29,10 @@ xmlport 70571576 "CREDIT EasyInv MasterData filt"
             textelement(RecordFilter)
             {
             }
+            textelement(TableNameFilter)
+            {
+                MinOccurs = Zero;
+            }
         }
     }
 
@@ -44,12 +48,21 @@ xmlport 70571576 "CREDIT EasyInv MasterData filt"
         }
     }
 
-    procedure GetParameters(var TableFilterOut : Text;var FieldFilterOut : Text;var KeyOut : Text;var RecordFilterOut : Text);
+    /// <summary>
+    /// GetParameters.
+    /// </summary>
+    /// <param name="TableFilterOut">VAR Text.</param>
+    /// <param name="FieldFilterOut">VAR Text.</param>
+    /// <param name="KeyOut">VAR Text.</param>
+    /// <param name="RecordFilterOut">VAR Text.</param>
+    /// <param name="TableNameFilterOut">VAR text.</param>
+    procedure GetParameters(var TableFilterOut: Text; var FieldFilterOut: Text; var KeyOut: Text; var RecordFilterOut: Text; var TableNameFilterOut: text);
     begin
         TableFilterOut := TableFilter;
         FieldFilterOut := FieldFilter;
         KeyOut := Key;
         RecordFilterOut := RecordFilter;
+        TableNameFilterOut := TableNameFilter;
     end;
 }
 

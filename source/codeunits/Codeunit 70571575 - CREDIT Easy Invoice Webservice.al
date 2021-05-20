@@ -68,11 +68,12 @@ codeunit 70571575 "CREDIT Easy Invoice Webservice"
         FieldFilterOut: Text;
         KeyOut: Text;
         RecordFilterOut: Text;
+        TableNameFilterOut: Text;
 
     begin
         request.IMPORT;
-        request.GetParameters(TableFilterOut, FieldFilterOut, KeyOut, RecordFilterOut);
-        response.SetParameters(TableFilterOut, FieldFilterOut, KeyOut, RecordFilterOut);
+        request.GetParameters(TableFilterOut, FieldFilterOut, KeyOut, RecordFilterOut,TableFilterOut);
+        response.SetParameters(TableFilterOut, FieldFilterOut, KeyOut, RecordFilterOut,TableNameFilterOut);
         response.EXPORT;
     end;
 
